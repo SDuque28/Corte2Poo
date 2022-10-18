@@ -17,7 +17,6 @@ public class FiguraEstandar {
     private int y;
     private int alto;
     private int ancho;
-    private boolean maquina;
 
     public FiguraEstandar() {
     }
@@ -28,15 +27,6 @@ public class FiguraEstandar {
         this.alto = alto;
         this.ancho = ancho;
         this.area = new Rectangle(x, y, alto, ancho);
-        this.maquina = true;
-    }
-
-    public boolean isMaquina() {
-        return maquina;
-    }
-
-    public void setMaquina(boolean maquina) {
-        this.maquina = maquina;
     }
 
     public Rectangle getArea() {

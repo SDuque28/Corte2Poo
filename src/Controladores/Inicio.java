@@ -6,6 +6,7 @@ package Controladores;
 
 import Modelos.FiguraEstandar;
 import Modelos.Imagen;
+import Modelos.Jugador;
 import java.awt.event.KeyEvent;
 
 /**
@@ -16,7 +17,7 @@ public class Inicio extends javax.swing.JFrame implements Runnable{
 
     Thread procesoJuego;
     Thread tiempo;
-    Imagen jugador;
+    Jugador jugador;
     int j = 0;
     double alturaMax;
     /**
@@ -27,11 +28,8 @@ public class Inicio extends javax.swing.JFrame implements Runnable{
         this.setSize(1300, 748);
         this.setResizable(false);
         
-        this.jugador = new Imagen("src/Imagenes/StandingR.png", 600, 504, 90, 86);
-        
-        
+        this.jugador = new Jugador("src/Imagenes/StandingR.png", 600, 504, 90, 86);        
         FiguraEstandar suelo = new FiguraEstandar(0,583, 20, 1200);
-        this.jugador.setMaquina(false);
         FiguraEstandar suelo1 = new FiguraEstandar(0,420, 20, 327);
         FiguraEstandar suelo2 = new FiguraEstandar(548,420, 20, 513);
         FiguraEstandar suelo3 = new FiguraEstandar(159,276, 20, 257);
@@ -110,7 +108,6 @@ public class Inicio extends javax.swing.JFrame implements Runnable{
                 case KeyEvent.VK_RIGHT -> {
                     if(this.jugador.getEstado().equals("suelo")){
                         if(this.jugador.getDireccion().equals("derecha")){
-                            System.out.println(this.jugador.getUrl());
                             if(this.j == 0){
                                 this.jugador.setUrl("src/Imagenes/StandingR.png");
                             }else if(this.j ==1){
@@ -272,49 +269,52 @@ public class Inicio extends javax.swing.JFrame implements Runnable{
     public void mover(){
         for(FiguraEstandar actual: this.lienzo.getMisFiguras()){
             if(actual instanceof FiguraEstandar){
-                if(!actual.isMaquina()){
-                    String respuesta = verificarColision(actual);
-                    //System.out.println(respuesta);
-                    if(this.jugador.getEstado().equals("aire") || respuesta.equals("no colisiona")){                    
-                        if(this.jugador.getAire().equals("subida") && (!respuesta.equals("arriba") && this.jugador.getY() - 1 >= alturaMax)){
-                            this.jugador.moverAR(1);
-                            if(this.jugador.getDireccion().equals("derecha")){
-                                if(this.jugador.getX() + this.jugador.getAncho() + 1 < this.lienzo.getWidth()){
-                                    this.jugador.moverDE(1); 
-                                    this.jugador.setUrl("src/Imagenes/slt1.png");
+                if(actual instanceof Imagen){
+                    Imagen temp = (Imagen) actual;
+                    if(temp instanceof Jugador){
+                        String respuesta = verificarColision(actual);
+                        //System.out.println(respuesta);
+                        if(this.jugador.getEstado().equals("aire") || respuesta.equals("no colisiona")){                    
+                            if(this.jugador.getAire().equals("subida") && (!respuesta.equals("arriba") && this.jugador.getY() - 1 >= alturaMax)){
+                                this.jugador.moverAR(1);
+                                if(this.jugador.getDireccion().equals("derecha")){
+                                    if(this.jugador.getX() + this.jugador.getAncho() + 1 < this.lienzo.getWidth()){
+                                        this.jugador.moverDE(1); 
+                                        this.jugador.setUrl("src/Imagenes/slt1.png");
+                                    }
+                                }else{
+                                    if(this.jugador.getX() - 1 > 0){
+                                        this.jugador.moverIZ(1);
+                                        this.jugador.setUrl("src/Imagenes/sl3.png");
+                                    }                            
                                 }
-                            }else{
-                                if(this.jugador.getX() - 1 > 0){
-                                    this.jugador.moverIZ(1);
-                                    this.jugador.setUrl("src/Imagenes/sl3.png");
-                                }                            
+                            }else if((respuesta.equals("arriba") || this.jugador.getY() - 1 <= alturaMax)&&!this.jugador.getAire().equals("bajada")){
+                                this.jugador.setAire("bajada");
+                                this.jugador.moverAB(1);
+                            }else if(this.jugador.getAire().equals("bajada") && !respuesta.equals("abajo")){                                              
+                                this.jugador.moverAB(1);
+                                if(this.jugador.getDireccion().equals("derecha")){
+                                    if(this.jugador.getX() + this.jugador.getAncho() + 1 < this.lienzo.getWidth()){
+                                        this.jugador.moverDE(1);
+                                        this.jugador.setUrl("src/Imagenes/slt2.png");
+                                    }   
+                                }else{
+                                    if(this.jugador.getX() - 1 > 0){
+                                        this.jugador.moverIZ(1);
+                                        this.jugador.setUrl("src/Imagenes/sl4.png");
+                                    }                            
+                                }
+                            }else if (respuesta.equals("abajo")){
+                                if(this.jugador.getDireccion().equals("derecha")){
+                                    this.jugador.setUrl("src/Imagenes/StandingR.png");
+                                }else{
+                                    this.jugador.setUrl("src/Imagenes/StandingL.png");
+                                }
+                                this.jugador.setEstado("suelo"); 
+                                alturaMax = this.jugador.getY()-((2240)/(2*6.6));
                             }
-                        }else if((respuesta.equals("arriba") || this.jugador.getY() - 1 <= alturaMax)&&!this.jugador.getAire().equals("bajada")){
-                            this.jugador.setAire("bajada");
-                            this.jugador.moverAB(1);
-                        }else if(this.jugador.getAire().equals("bajada") && !respuesta.equals("abajo")){                                              
-                            this.jugador.moverAB(1);
-                            if(this.jugador.getDireccion().equals("derecha")){
-                                if(this.jugador.getX() + this.jugador.getAncho() + 1 < this.lienzo.getWidth()){
-                                    this.jugador.moverDE(1);
-                                    this.jugador.setUrl("src/Imagenes/slt2.png");
-                                }   
-                            }else{
-                                if(this.jugador.getX() - 1 > 0){
-                                    this.jugador.moverIZ(1);
-                                    this.jugador.setUrl("src/Imagenes/sl4.png");
-                                }                            
-                            }
-                        }else if (respuesta.equals("abajo")){
-                            if(this.jugador.getDireccion().equals("derecha")){
-                                this.jugador.setUrl("src/Imagenes/StandingR.png");
-                            }else{
-                                this.jugador.setUrl("src/Imagenes/StandingL.png");
-                            }
-                            this.jugador.setEstado("suelo"); 
-                            alturaMax = this.jugador.getY()-((2240)/(2*6.6));
                         }
-                    }
+                    }                    
                 }
             }
         }

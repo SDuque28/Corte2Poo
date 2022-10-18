@@ -6,6 +6,8 @@ package Controladores;
 
 import Modelos.FiguraEstandar;
 import Modelos.Imagen;
+import Modelos.Jugador;
+import Modelos.Proyectil;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -26,6 +28,7 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
     private int i = 0,segundos = 0,aux = -3,aux1 = 0;
     private Imagen adver;
     private Imagen flecha;
+    private Proyectil shuriken;
     
     /**
      * Creates new form Lienzo
@@ -36,9 +39,10 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         this.misFiguras = new LinkedList<>();
         adver = new Imagen("src/Imagenes/adver.png", 0, 0,0,0);
         flecha = new Imagen("src/Imagenes/fizc.png", 0, 0,0,0);
+        shuriken = new Proyectil("src/Imagenes/shuriken.png", 0, 0,0,0);
         this.misFiguras.add(adver);
         this.misFiguras.add(flecha);
-        
+        this.misFiguras.add(shuriken);
     }
 
     public boolean isIsPlaying() {
@@ -61,12 +65,12 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         Toolkit t = Toolkit.getDefaultToolkit();
         Image imagen = t.getImage(imagenActual.getUrl());
         g.drawImage(imagen,imagenActual.getX(),imagenActual.getY(), imagenActual.getAncho(),imagenActual.getAlto(), this);
-        g.drawRect(imagenActual.getX(),imagenActual.getY(), imagenActual.getAncho(),imagenActual.getAlto());
+        //g.drawRect(imagenActual.getX(),imagenActual.getY(), imagenActual.getAncho(),imagenActual.getAlto());
     }
     
     public void dibujarRectangulo(Graphics g,FiguraEstandar rectangulo){
-        g.setColor(Color.red);
-        g.drawRect(rectangulo.getX(),rectangulo.getY(),rectangulo.getAncho(),rectangulo.getAlto());
+        //g.setColor(Color.red);
+        //g.drawRect(rectangulo.getX(),rectangulo.getY(),rectangulo.getAncho(),rectangulo.getAlto());
     }
 
     @Override
@@ -149,19 +153,24 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
     public void mover(){
         for(FiguraEstandar actual: this.misFiguras){
             if(actual instanceof FiguraEstandar){
-                System.out.println(""+aux);
-                if(!actual.isMaquina()){
-                    String respuesta = verificarColision(actual);
+                //System.out.println(""+aux);
+                if(actual instanceof Imagen){
+                    Imagen temp = (Imagen)actual;
+                    if(temp instanceof Jugador){
+                       String respuesta = verificarColision(actual); 
+                    }                    
                     //System.out.println(respuesta);
                     //System.out.println(""+aux);
                 }else if(this.segundos >= 2){
                     if(aux != this.segundos && aux+1 != this.segundos && aux+2 != this.segundos && aux+3 != this.segundos){
-                        System.out.println(""+this.segundos);
+                        
                         aux = this.segundos;
                         this.adver.setAlto(80);
                         this.adver.setAncho(80);
                         this.flecha.setAlto(40);
                         this.flecha.setAncho(40);
+                        this.shuriken.setAlto(0);
+                        this.shuriken.setAncho(0);
                         int num1 = (int)Math.floor(Math.random()*6+1);
                         switch (num1) {
                             case 1 -> {
@@ -276,6 +285,46 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
                         this.adver.setAncho(0);
                         this.flecha.setAlto(0);
                         this.flecha.setAncho(0);
+                    }
+                }
+                if(this.segundos>=4){
+                    if(this.adver.getAlto() == 0 && this.shuriken.getAlto()== 0){
+                        this.shuriken.setAlto(60);
+                        this.shuriken.setAncho(60);
+                        this.shuriken.setX(this.adver.getX());
+                        this.shuriken.setY(this.adver.getY());
+                        if(flecha.getUrl().equals("src/Imagenes/fdec.png")){
+                            this.shuriken.setPuntero("derecha-centro");
+                        }else if(flecha.getUrl().equals("src/Imagenes/fdear.png")){
+                            this.shuriken.setPuntero("derecha-arriba");
+                        }else if(flecha.getUrl().equals("src/Imagenes/fdeab.png")){
+                            this.shuriken.setPuntero("derecha-abajo");
+                        }else if(flecha.getUrl().equals("src/Imagenes/fizc.png")){
+                            this.shuriken.setPuntero("izquierda-centro");
+                        }else if(flecha.getUrl().equals("src/Imagenes/fizar.png")){
+                            this.shuriken.setPuntero("izquierda-arriba");
+                        }else if(flecha.getUrl().equals("src/Imagenes/fizab.png")){
+                            this.shuriken.setPuntero("izquierda-abajo");
+                        }
+                    }else if(this.adver.getAlto() == 0){
+                        if(this.shuriken.getPuntero().equals("derecha-centro")){
+                            this.shuriken.moverDE(1);
+                        }else if(this.shuriken.getPuntero().equals("derecha-arriba")){
+                            this.shuriken.moverDE(1);
+                            this.shuriken.moverAR(1);
+                        }else if(this.shuriken.getPuntero().equals("derecha-abajo")){
+                            this.shuriken.moverDE(1);
+                            this.shuriken.moverAB(1);
+                        }else if(this.shuriken.getPuntero().equals("izquierda-centro")){
+                            this.shuriken.moverIZ(1);
+                        }else if(this.shuriken.getPuntero().equals("izquierda-arriba")){
+                            this.shuriken.moverIZ(1);
+                            this.shuriken.moverAR(1);
+                        }else if(this.shuriken.getPuntero().equals("izquierda-abajo")){
+                            this.shuriken.moverIZ(1);
+                            this.shuriken.moverAB(1);
+                        }
+                        
                     }
                 }
             }
