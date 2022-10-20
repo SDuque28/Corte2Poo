@@ -7,7 +7,9 @@ package Controladores;
 import Modelos.FiguraEstandar;
 import Modelos.Imagen;
 import Modelos.Jugador;
+import Modelos.Proyectil;
 import java.awt.event.KeyEvent;
+import javax.swing.Icon;
 
 /**
  *
@@ -19,7 +21,7 @@ public class Inicio extends javax.swing.JFrame implements Runnable{
     Thread tiempo;
     Jugador jugador;
     int j = 0;
-    double alturaMax;
+    int alturaMax;
     /**
      * Creates new form Inicio
      */
@@ -28,16 +30,16 @@ public class Inicio extends javax.swing.JFrame implements Runnable{
         this.setSize(1300, 748);
         this.setResizable(false);
         
-        this.jugador = new Jugador("src/Imagenes/StandingR.png", 600, 504, 90, 86);        
-        FiguraEstandar suelo = new FiguraEstandar(0,583, 20, 1200);
-        FiguraEstandar suelo1 = new FiguraEstandar(0,420, 20, 327);
-        FiguraEstandar suelo2 = new FiguraEstandar(548,420, 20, 513);
-        FiguraEstandar suelo3 = new FiguraEstandar(159,276, 20, 257);
-        FiguraEstandar suelo4 = new FiguraEstandar(727,276, 20, 92);
-        FiguraEstandar suelo5 = new FiguraEstandar(1046,276, 20, 238);
-        FiguraEstandar suelo6 = new FiguraEstandar(0,132, 20, 92);
-        FiguraEstandar suelo7 = new FiguraEstandar(286,132, 20, 217);
-        FiguraEstandar suelo8 = new FiguraEstandar(798,132, 20, 758);
+        this.jugador = new Jugador("src/Imagenes/StandingR.png", 600, 493, 90, 86);        
+        FiguraEstandar suelo = new FiguraEstandar(0,583, 1, 1200);
+        FiguraEstandar suelo1 = new FiguraEstandar(0,420, 1, 327);
+        FiguraEstandar suelo2 = new FiguraEstandar(548,420, 1, 513);
+        FiguraEstandar suelo3 = new FiguraEstandar(159,276, 1, 257);
+        FiguraEstandar suelo4 = new FiguraEstandar(727,276, 1, 92);
+        FiguraEstandar suelo5 = new FiguraEstandar(1046,276, 1, 238);
+        FiguraEstandar suelo6 = new FiguraEstandar(0,132, 1, 92);
+        FiguraEstandar suelo7 = new FiguraEstandar(286,132, 1, 217);
+        FiguraEstandar suelo8 = new FiguraEstandar(798,132, 1, 758);
         this.lienzo.setVisible(false);
         this.lienzo.getMisFiguras().add(jugador);
         this.lienzo.getMisFiguras().add(suelo);
@@ -51,7 +53,8 @@ public class Inicio extends javax.swing.JFrame implements Runnable{
         this.lienzo.getMisFiguras().add(suelo8);
         
         this.setFocusable(true);
-        alturaMax = this.jugador.getY()-((2440)/(2*6.6));
+        alturaMax = this.jugador.getY()-180;
+        GameOver.setVisible(false);
     }
 
     /**
@@ -65,6 +68,7 @@ public class Inicio extends javax.swing.JFrame implements Runnable{
 
         lienzo = new Controladores.Lienzo();
         time = new javax.swing.JLabel();
+        GameOver = new javax.swing.JLabel();
         intro = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
@@ -92,6 +96,9 @@ public class Inicio extends javax.swing.JFrame implements Runnable{
         lienzo.add(time, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 5, 120, 40));
 
         getContentPane().add(lienzo, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 1200, 630));
+
+        GameOver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/GameOver.png"))); // NOI18N
+        getContentPane().add(GameOver, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         intro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/intro.png"))); // NOI18N
         getContentPane().add(intro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 710));
@@ -126,13 +133,12 @@ public class Inicio extends javax.swing.JFrame implements Runnable{
                                 this.jugador.setUrl("src/Imagenes/wk7.png");
                                 this.j = 0;
                             }
-                            
                         }else if(this.jugador.getDireccion().equals("izquierda")){
                             this.jugador.setDireccion("derecha");
                             this.jugador.setUrl("src/Imagenes/StandingR.png");
                         }   
-                        if(this.jugador.getX()+this.jugador.getAncho()+15 <= this.lienzo.getWidth()){
-                            this.jugador.moverDE(10);
+                        if(this.jugador.getX()+this.jugador.getAncho()+20 <= this.lienzo.getWidth()){
+                            this.jugador.moverDE(20);
                         }
                     }
                     j++;
@@ -154,8 +160,8 @@ public class Inicio extends javax.swing.JFrame implements Runnable{
                             default -> j = 0;
                         }
                     }   
-                    if(this.jugador.getX()-10 >= 0){
-                        this.jugador.moverIZ(10);
+                    if(this.jugador.getX()-20 >= 0){
+                        this.jugador.moverIZ(20);
                     }
                     j++;
                 }
@@ -174,16 +180,30 @@ public class Inicio extends javax.swing.JFrame implements Runnable{
 
     private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
         if(evt.getKeyChar() == KeyEvent.VK_ENTER){
-            if(!this.lienzo.isIsPlaying()){
-                this.procesoJuego = new Thread(this.lienzo);
-                this.lienzo.setIsPlaying(true);
-                this.procesoJuego.start();
-                this.tiempo = new Thread(this);
-                this.tiempo.start();
-                this.lienzo.setVisible(true);
-                intro.setVisible(false);
+            if(GameOver.isVisible()){
+                intro.setVisible(true);
+                GameOver.setVisible(false);
+            }else{
+                if(!this.lienzo.isIsPlaying()){
+                    this.procesoJuego = new Thread(this.lienzo);
+                    this.lienzo.setSegundos(0);
+                    this.lienzo.setI(0);
+                    this.lienzo.setIsPlaying(true);
+                    this.procesoJuego.start();
+                    this.tiempo = new Thread(this);
+                    this.tiempo.start();
+                    this.lienzo.setVisible(true);
+                    intro.setVisible(false);
+                    this.jugador.setX(600);
+                    this.jugador.setY(493);
+                    this.lienzo.setVisible(true);
+                    this.jugador.setUrl("src/Imagenes/StandingR.png");
+                    this.jugador.setEstado("suelo");
+                    this.jugador.setAire("neutral");
+                }
+                this.setFocusable(true); 
             }
-            this.setFocusable(true);
+            
         }
     }//GEN-LAST:event_formKeyTyped
 
@@ -233,6 +253,7 @@ public class Inicio extends javax.swing.JFrame implements Runnable{
    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel GameOver;
     private javax.swing.JLabel intro;
     private javax.swing.JLabel jLabel1;
     private Controladores.Lienzo lienzo;
@@ -253,29 +274,48 @@ public class Inicio extends javax.swing.JFrame implements Runnable{
         int i = 0;
         while(i < this.lienzo.getMisFiguras().size() && colision.equals("no colisiona")){
             FiguraEstandar actual = this.lienzo.getMisFiguras().get(i);
-            if(jugador!= actual){
-                if(jugador.getY()+jugador.getAlto() == actual.getY() && (actual.getX() + actual.getAncho() >= jugador.getX() && jugador.getX() + jugador.getAncho() >= actual.getX())){
-                    colision = "abajo";
-                }else if(jugador.getY() == actual.getY() + actual.getAlto() && (actual.getX() + actual.getAncho() >= jugador.getX() && jugador.getX() + jugador.getAncho() >= actual.getX())){
-                    colision = "arriba";
-                }else{
-                    colision = "no colisiona";
+            if(actual instanceof Imagen){
+                Imagen temp = (Imagen) actual;
+                if(temp instanceof Proyectil){
+                    if((jugador.getY()+jugador.getAlto() >= temp.getY() && temp.getY() + temp.getAlto() >= jugador.getY()) && (temp.getX() + temp.getAncho() >= jugador.getX() && jugador.getX() + jugador.getAncho() >= temp.getX())){
+                        this.lienzo.setIsPlaying(false);
+                        GameOver.setVisible(true);
+                        this.lienzo.setVisible(false);
+                        temp.setAncho(0);
+                        temp.setAlto(0);
+                        this.lienzo.setAux(-3);
+                        this.lienzo.setAux1(0);
+                    }
                 }
+            }else{
+                if(jugador!= actual){
+                    if((jugador.getY()+jugador.getAlto() >= actual.getY() && actual.getY() + actual.getAlto() >= jugador.getY()) && (actual.getX() + actual.getAncho() >= jugador.getX() && jugador.getX() + jugador.getAncho() >= actual.getX())){
+                        if(jugador.getY()+jugador.getAlto() == actual.getY()){
+                            colision = "abajo";
+                        }
+                    }else{
+                        colision = "no colisiona";
+                    }
+                } 
             }            
             i++;
         }
         return colision;
     }
+    
     public void mover(){
         for(FiguraEstandar actual: this.lienzo.getMisFiguras()){
             if(actual instanceof FiguraEstandar){
                 if(actual instanceof Imagen){
                     Imagen temp = (Imagen) actual;
                     if(temp instanceof Jugador){
-                        String respuesta = verificarColision(actual);
+                        Jugador juega = (Jugador) temp;
+                        String respuesta = verificarColision(juega);
                         //System.out.println(respuesta);
+                        //System.out.println("jugador: "+jugador.getY()+" altura max: "+alturaMax);
+                        //System.out.println(this.jugador.getEstado()+" "+this.jugador.getAire());
                         if(this.jugador.getEstado().equals("aire") || respuesta.equals("no colisiona")){                    
-                            if(this.jugador.getAire().equals("subida") && (!respuesta.equals("arriba") && this.jugador.getY() - 1 >= alturaMax)){
+                            if(this.jugador.getAire().equals("subida") && this.jugador.getY() - 1 >= alturaMax){
                                 this.jugador.moverAR(1);
                                 if(this.jugador.getDireccion().equals("derecha")){
                                     if(this.jugador.getX() + this.jugador.getAncho() + 1 < this.lienzo.getWidth()){
@@ -288,10 +328,10 @@ public class Inicio extends javax.swing.JFrame implements Runnable{
                                         this.jugador.setUrl("src/Imagenes/sl3.png");
                                     }                            
                                 }
-                            }else if((respuesta.equals("arriba") || this.jugador.getY() - 1 <= alturaMax)&&!this.jugador.getAire().equals("bajada")){
+                            }else if(this.jugador.getY() - 1 <= alturaMax&&!this.jugador.getAire().equals("bajada")){
                                 this.jugador.setAire("bajada");
-                                this.jugador.moverAB(1);
-                            }else if(this.jugador.getAire().equals("bajada") && !respuesta.equals("abajo")){                                              
+                                System.out.println("ante");
+                            }else if(!respuesta.equals("abajo") && !this.jugador.getEstado().equals("neutral")){                                              
                                 this.jugador.moverAB(1);
                                 if(this.jugador.getDireccion().equals("derecha")){
                                     if(this.jugador.getX() + this.jugador.getAncho() + 1 < this.lienzo.getWidth()){
@@ -304,16 +344,22 @@ public class Inicio extends javax.swing.JFrame implements Runnable{
                                         this.jugador.setUrl("src/Imagenes/sl4.png");
                                     }                            
                                 }
-                            }else if (respuesta.equals("abajo")){
+                                System.out.println("penul");
+                                System.out.println(respuesta);
+                            }else if(respuesta.equals("abajo") || this.jugador.getEstado().equals("neutral")){
+                                System.out.println("ultimo if");
                                 if(this.jugador.getDireccion().equals("derecha")){
+                                    System.out.println("hola");
                                     this.jugador.setUrl("src/Imagenes/StandingR.png");
                                 }else{
                                     this.jugador.setUrl("src/Imagenes/StandingL.png");
                                 }
                                 this.jugador.setEstado("suelo"); 
-                                alturaMax = this.jugador.getY()-((2240)/(2*6.6));
+                                this.jugador.setAire("neutral");
+                                alturaMax = this.jugador.getY()-180;
                             }
                         }
+                        break;
                     }                    
                 }
             }

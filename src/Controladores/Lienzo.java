@@ -65,12 +65,12 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         Toolkit t = Toolkit.getDefaultToolkit();
         Image imagen = t.getImage(imagenActual.getUrl());
         g.drawImage(imagen,imagenActual.getX(),imagenActual.getY(), imagenActual.getAncho(),imagenActual.getAlto(), this);
-        //g.drawRect(imagenActual.getX(),imagenActual.getY(), imagenActual.getAncho(),imagenActual.getAlto());
+        g.drawRect(imagenActual.getX(),imagenActual.getY(), imagenActual.getAncho(),imagenActual.getAlto());
     }
     
     public void dibujarRectangulo(Graphics g,FiguraEstandar rectangulo){
-        //g.setColor(Color.red);
-        //g.drawRect(rectangulo.getX(),rectangulo.getY(),rectangulo.getAncho(),rectangulo.getAlto());
+        g.setColor(Color.red);
+        g.drawRect(rectangulo.getX(),rectangulo.getY(),rectangulo.getAncho(),rectangulo.getAlto());
     }
 
     @Override
@@ -131,20 +131,17 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         }
     }
     
-    public String verificarColision(FiguraEstandar jugador){
+    public String verificarColision(Jugador jugador){
         String colision = "no colisiona";
         int i = 0;
         while(i < this.getMisFiguras().size() && colision.equals("no colisiona")){
             if(jugador!= this.getMisFiguras().get(i)){
                 if(jugador.getY()+jugador.getAlto() == this.misFiguras.get(i).getY()){
                     colision = "abajo";
-                }else if(jugador.getY() == this.misFiguras.get(i).getY() + this.misFiguras.get(i).getAlto()){
-                    colision = "arriba";
                 }else{
                     colision = "no colisiona";
                 }
-            }
-            
+            }            
             i++;
         }
         return colision;
@@ -157,13 +154,14 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
                 if(actual instanceof Imagen){
                     Imagen temp = (Imagen)actual;
                     if(temp instanceof Jugador){
-                       String respuesta = verificarColision(actual); 
+                       Jugador jugador = (Jugador)temp;
+                       String respuesta = verificarColision(jugador);
+                       //System.out.println(respuesta);
                     }                    
-                    //System.out.println(respuesta);
-                    //System.out.println(""+aux);
+                    
+                    //System.out.println(""+this.segundos);
                 }else if(this.segundos >= 2){
-                    if(aux != this.segundos && aux+1 != this.segundos && aux+2 != this.segundos && aux+3 != this.segundos){
-                        
+                    if(aux != this.segundos && aux+1 != this.segundos && aux+2 != this.segundos && aux+3 != this.segundos){                        
                         aux = this.segundos;
                         this.adver.setAlto(80);
                         this.adver.setAncho(80);
@@ -323,8 +321,7 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
                         }else if(this.shuriken.getPuntero().equals("izquierda-abajo")){
                             this.shuriken.moverIZ(1);
                             this.shuriken.moverAB(1);
-                        }
-                        
+                        }                        
                     }
                 }
             }
@@ -345,6 +342,22 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
 
     public void setSegundos(int segundos) {
         this.segundos = segundos;
+    }
+
+    public int getAux() {
+        return aux;
+    }
+
+    public void setAux(int aux) {
+        this.aux = aux;
+    }
+
+    public int getAux1() {
+        return aux1;
+    }
+
+    public void setAux1(int aux1) {
+        this.aux1 = aux1;
     }
     
 
