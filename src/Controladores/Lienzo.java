@@ -25,7 +25,7 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
     
     private LinkedList<FiguraEstandar> misFiguras;
     private boolean isPlaying;
-    private int i = 0,segundos = 0,aux = -3,aux1 = 0;
+    private int i = 0,segundos = 0,aux = -1,aux1 = 0;
     private Imagen adver;
     private Imagen flecha;
     private Proyectil shuriken;
@@ -65,12 +65,12 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         Toolkit t = Toolkit.getDefaultToolkit();
         Image imagen = t.getImage(imagenActual.getUrl());
         g.drawImage(imagen,imagenActual.getX(),imagenActual.getY(), imagenActual.getAncho(),imagenActual.getAlto(), this);
-        g.drawRect(imagenActual.getX(),imagenActual.getY(), imagenActual.getAncho(),imagenActual.getAlto());
+        //g.drawRect(imagenActual.getX(),imagenActual.getY(), imagenActual.getAncho(),imagenActual.getAlto());
     }
     
     public void dibujarRectangulo(Graphics g,FiguraEstandar rectangulo){
         g.setColor(Color.red);
-        g.drawRect(rectangulo.getX(),rectangulo.getY(),rectangulo.getAncho(),rectangulo.getAlto());
+        //g.drawRect(rectangulo.getX(),rectangulo.getY(),rectangulo.getAncho(),rectangulo.getAlto());
     }
 
     @Override
@@ -276,8 +276,8 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
                         }
                     }                   
                 }
-                if(this.segundos >= 3){
-                    if(aux1 != this.segundos && aux1+1 != this.segundos && aux1+2 != this.segundos && aux1+3 != this.segundos){
+                if(this.segundos >= 2){
+                    if(aux1 != this.segundos && aux1+1 != this.segundos){
                         aux1 = this.segundos;
                         this.adver.setAlto(0);
                         this.adver.setAncho(0);
@@ -285,7 +285,7 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
                         this.flecha.setAncho(0);
                     }
                 }
-                if(this.segundos>=4){
+                if(this.segundos>=3){
                     if(this.adver.getAlto() == 0 && this.shuriken.getAlto()== 0){
                         this.shuriken.setAlto(60);
                         this.shuriken.setAncho(60);

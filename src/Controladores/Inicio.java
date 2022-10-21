@@ -304,16 +304,16 @@ public class Inicio extends javax.swing.JFrame implements Runnable{
     }
     
     public void mover(){
-        for(FiguraEstandar actual: this.lienzo.getMisFiguras()){
-            if(actual instanceof FiguraEstandar){
-                if(actual instanceof Imagen){
-                    Imagen temp = (Imagen) actual;
-                    if(temp instanceof Jugador){
-                        Jugador juega = (Jugador) temp;
-                        String respuesta = verificarColision(juega);
+//        for(FiguraEstandar actual: this.lienzo.getMisFiguras()){
+//            if(actual instanceof FiguraEstandar){
+//                if(actual instanceof Imagen){
+//                    Imagen temp = (Imagen) actual;
+//                    if(temp instanceof Jugador){
+                        //Jugador juega = (Jugador) temp;
+                        String respuesta = verificarColision(this.jugador);
                         //System.out.println(respuesta);
                         //System.out.println("jugador: "+jugador.getY()+" altura max: "+alturaMax);
-                        //System.out.println(this.jugador.getEstado()+" "+this.jugador.getAire());
+                        //System.out.println("Estado: "+this.jugador.getEstado()+" Aire: "+this.jugador.getAire());
                         if(this.jugador.getEstado().equals("aire") || respuesta.equals("no colisiona")){                    
                             if(this.jugador.getAire().equals("subida") && this.jugador.getY() - 1 >= alturaMax){
                                 this.jugador.moverAR(1);
@@ -328,10 +328,8 @@ public class Inicio extends javax.swing.JFrame implements Runnable{
                                         this.jugador.setUrl("src/Imagenes/sl3.png");
                                     }                            
                                 }
-                            }else if(this.jugador.getY() - 1 <= alturaMax&&!this.jugador.getAire().equals("bajada")){
+                            }else if(!respuesta.equals("abajo")){  
                                 this.jugador.setAire("bajada");
-                                System.out.println("ante");
-                            }else if(!respuesta.equals("abajo") && !this.jugador.getEstado().equals("neutral")){                                              
                                 this.jugador.moverAB(1);
                                 if(this.jugador.getDireccion().equals("derecha")){
                                     if(this.jugador.getX() + this.jugador.getAncho() + 1 < this.lienzo.getWidth()){
@@ -344,8 +342,8 @@ public class Inicio extends javax.swing.JFrame implements Runnable{
                                         this.jugador.setUrl("src/Imagenes/sl4.png");
                                     }                            
                                 }
-                                System.out.println("penul");
-                                System.out.println(respuesta);
+                                //System.out.println("penul");
+                                System.out.println(respuesta);                                
                             }else if(respuesta.equals("abajo") || this.jugador.getEstado().equals("neutral")){
                                 System.out.println("ultimo if");
                                 if(this.jugador.getDireccion().equals("derecha")){
@@ -359,11 +357,10 @@ public class Inicio extends javax.swing.JFrame implements Runnable{
                                 alturaMax = this.jugador.getY()-180;
                             }
                         }
-                        break;
-                    }                    
-                }
-            }
-        }
+//                    }                    
+//                }
+//            }
+//        }
     }
     
     private void esperar(int milisegundos) {
