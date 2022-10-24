@@ -9,13 +9,12 @@ import Modelos.Imagen;
 import Modelos.Jugador;
 import Modelos.Proyectil;
 import java.awt.event.KeyEvent;
-import javax.swing.Icon;
 
 /**
  *
  * @author Santiago D
  */
-public class Inicio extends javax.swing.JFrame implements Runnable{
+public final class Inicio extends javax.swing.JFrame implements Runnable{
 
     Thread procesoJuego;
     Thread tiempo;
@@ -29,29 +28,10 @@ public class Inicio extends javax.swing.JFrame implements Runnable{
         initComponents();
         this.setSize(1300, 748);
         this.setResizable(false);
-        
-        this.jugador = new Jugador("src/Imagenes/StandingR.png", 600, 493, 90, 86);        
-        FiguraEstandar suelo = new FiguraEstandar(0,583, 1, 1200);
-        FiguraEstandar suelo1 = new FiguraEstandar(0,420, 1, 327);
-        FiguraEstandar suelo2 = new FiguraEstandar(548,420, 1, 513);
-        FiguraEstandar suelo3 = new FiguraEstandar(159,276, 1, 257);
-        FiguraEstandar suelo4 = new FiguraEstandar(727,276, 1, 92);
-        FiguraEstandar suelo5 = new FiguraEstandar(1046,276, 1, 238);
-        FiguraEstandar suelo6 = new FiguraEstandar(0,132, 1, 92);
-        FiguraEstandar suelo7 = new FiguraEstandar(286,132, 1, 217);
-        FiguraEstandar suelo8 = new FiguraEstandar(798,132, 1, 758);
+        setLocationRelativeTo(null);
+        crearObjetos1();
+        crearObjetos2();
         this.lienzo.setVisible(false);
-        this.lienzo.getMisFiguras().add(jugador);
-        this.lienzo.getMisFiguras().add(suelo);
-        this.lienzo.getMisFiguras().add(suelo1);
-        this.lienzo.getMisFiguras().add(suelo2);
-        this.lienzo.getMisFiguras().add(suelo3);
-        this.lienzo.getMisFiguras().add(suelo4);
-        this.lienzo.getMisFiguras().add(suelo5);
-        this.lienzo.getMisFiguras().add(suelo6);
-        this.lienzo.getMisFiguras().add(suelo7);
-        this.lienzo.getMisFiguras().add(suelo8);
-        
         this.setFocusable(true);
         alturaMax = this.jugador.getY()-180;
         GameOver.setVisible(false);
@@ -112,68 +92,10 @@ public class Inicio extends javax.swing.JFrame implements Runnable{
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
         if(this.lienzo.isIsPlaying()){
             switch (evt.getKeyCode()) {
-                case KeyEvent.VK_RIGHT -> {
-                    if(this.jugador.getEstado().equals("suelo")){
-                        if(this.jugador.getDireccion().equals("derecha")){
-                            if(this.j == 0){
-                                this.jugador.setUrl("src/Imagenes/StandingR.png");
-                            }else if(this.j ==1){
-                                this.jugador.setUrl("src/Imagenes/wk1.png");                            
-                            }else if(this.j == 2){
-                               this.jugador.setUrl("src/Imagenes/wk2.png"); 
-                            }else if(this.j == 3){
-                                this.jugador.setUrl("src/Imagenes/wk3.png");
-                            }else if(this.j == 4){
-                                this.jugador.setUrl("src/Imagenes/wk4.png");
-                            }else if(this.j == 5){
-                                this.jugador.setUrl("src/Imagenes/wk5.png");
-                            }else if(this.j == 6){
-                                this.jugador.setUrl("src/Imagenes/wk6.png");
-                            }else if(this.j == 7){
-                                this.jugador.setUrl("src/Imagenes/wk7.png");
-                                this.j = 0;
-                            }
-                        }else if(this.jugador.getDireccion().equals("izquierda")){
-                            this.jugador.setDireccion("derecha");
-                            this.jugador.setUrl("src/Imagenes/StandingR.png");
-                        }   
-                        if(this.jugador.getX()+this.jugador.getAncho()+20 <= this.lienzo.getWidth()){
-                            this.jugador.moverDE(20);
-                        }
-                    }
-                    j++;
-                }
-                case KeyEvent.VK_LEFT -> {
-                    if(this.jugador.getDireccion().equals("derecha")){
-                        this.jugador.setDireccion("izquierda");
-                        this.jugador.setUrl("src/Imagenes/StandingL.png");
-                    }else{
-                        switch (j) {
-                            case 0 -> this.jugador.setUrl("src/Imagenes/StandingL.png");
-                            case 1 -> this.jugador.setUrl("src/Imagenes/wk8.png");
-                            case 2 -> this.jugador.setUrl("src/Imagenes/wk9.png");
-                            case 3 -> this.jugador.setUrl("src/Imagenes/wk10.png");
-                            case 4 -> this.jugador.setUrl("src/Imagenes/wk11.png");
-                            case 5 -> this.jugador.setUrl("src/Imagenes/wk12.png");
-                            case 6 -> this.jugador.setUrl("src/Imagenes/wk13.png");
-                            case 7 -> this.jugador.setUrl("src/Imagenes/wk14.png");
-                            default -> j = 0;
-                        }
-                    }   
-                    if(this.jugador.getX()-20 >= 0){
-                        this.jugador.moverIZ(20);
-                    }
-                    j++;
-                }
-                case KeyEvent.VK_UP -> {                   
-                    if(this.jugador.getEstado().equals("suelo")){
-                        this.jugador.setEstado("aire");
-                        this.jugador.setAire("subida");                        
-                    }
-                    this.jugador.moverAR(1);
-                }
-                default -> {
-                }
+                case KeyEvent.VK_RIGHT -> moverDerecha();                
+                case KeyEvent.VK_LEFT -> moverIzquierda();
+                case KeyEvent.VK_UP -> moverArriba();
+                case KeyEvent.VK_DOWN -> moverAbajo();
             }
         }        
     }//GEN-LAST:event_formKeyPressed
@@ -185,25 +107,11 @@ public class Inicio extends javax.swing.JFrame implements Runnable{
                 GameOver.setVisible(false);
             }else{
                 if(!this.lienzo.isIsPlaying()){
-                    this.procesoJuego = new Thread(this.lienzo);
-                    this.lienzo.setSegundos(0);
-                    this.lienzo.setI(0);
-                    this.lienzo.setIsPlaying(true);
-                    this.procesoJuego.start();
-                    this.tiempo = new Thread(this);
-                    this.tiempo.start();
-                    this.lienzo.setVisible(true);
-                    intro.setVisible(false);
-                    this.jugador.setX(600);
-                    this.jugador.setY(493);
-                    this.lienzo.setVisible(true);
-                    this.jugador.setUrl("src/Imagenes/StandingR.png");
-                    this.jugador.setEstado("suelo");
-                    this.jugador.setAire("neutral");
+                    reinicio1();
+                    reinicio2();
                 }
                 this.setFocusable(true); 
-            }
-            
+            }            
         }
     }//GEN-LAST:event_formKeyTyped
 
@@ -269,99 +177,30 @@ public class Inicio extends javax.swing.JFrame implements Runnable{
         }
     }
     
-    public String verificarColision(FiguraEstandar jugador){
+    public String verificarColision(){
         String colision = "no colisiona";
         int i = 0;
         while(i < this.lienzo.getMisFiguras().size() && colision.equals("no colisiona")){
             FiguraEstandar actual = this.lienzo.getMisFiguras().get(i);
-            if(actual instanceof Imagen){
-                Imagen temp = (Imagen) actual;
-                if(temp instanceof Proyectil){
-                    if((jugador.getY()+jugador.getAlto() >= temp.getY() && temp.getY() + temp.getAlto() >= jugador.getY()) && (temp.getX() + temp.getAncho() >= jugador.getX() && jugador.getX() + jugador.getAncho() >= temp.getX())){
-                        this.lienzo.setIsPlaying(false);
-                        GameOver.setVisible(true);
-                        this.lienzo.setVisible(false);
-                        temp.setAncho(0);
-                        temp.setAlto(0);
-                        this.lienzo.setAux(-3);
-                        this.lienzo.setAux1(0);
-                    }
-                }
-            }else{
-                if(jugador!= actual){
-                    if((jugador.getY()+jugador.getAlto() >= actual.getY() && actual.getY() + actual.getAlto() >= jugador.getY()) && (actual.getX() + actual.getAncho() >= jugador.getX() && jugador.getX() + jugador.getAncho() >= actual.getX())){
-                        if(jugador.getY()+jugador.getAlto() == actual.getY()){
-                            colision = "abajo";
-                        }
-                    }else{
-                        colision = "no colisiona";
-                    }
-                } 
-            }            
+            colision = colision3(actual);
             i++;
         }
         return colision;
     }
     
     public void mover(){
-//        for(FiguraEstandar actual: this.lienzo.getMisFiguras()){
-//            if(actual instanceof FiguraEstandar){
-//                if(actual instanceof Imagen){
-//                    Imagen temp = (Imagen) actual;
-//                    if(temp instanceof Jugador){
-                        //Jugador juega = (Jugador) temp;
-                        String respuesta = verificarColision(this.jugador);
-                        //System.out.println(respuesta);
-                        //System.out.println("jugador: "+jugador.getY()+" altura max: "+alturaMax);
-                        //System.out.println("Estado: "+this.jugador.getEstado()+" Aire: "+this.jugador.getAire());
-                        if(this.jugador.getEstado().equals("aire") || respuesta.equals("no colisiona")){                    
-                            if(this.jugador.getAire().equals("subida") && this.jugador.getY() - 1 >= alturaMax){
-                                this.jugador.moverAR(1);
-                                if(this.jugador.getDireccion().equals("derecha")){
-                                    if(this.jugador.getX() + this.jugador.getAncho() + 1 < this.lienzo.getWidth()){
-                                        this.jugador.moverDE(1); 
-                                        this.jugador.setUrl("src/Imagenes/slt1.png");
-                                    }
-                                }else{
-                                    if(this.jugador.getX() - 1 > 0){
-                                        this.jugador.moverIZ(1);
-                                        this.jugador.setUrl("src/Imagenes/sl3.png");
-                                    }                            
-                                }
-                            }else if(!respuesta.equals("abajo")){  
-                                this.jugador.setAire("bajada");
-                                this.jugador.moverAB(1);
-                                if(this.jugador.getDireccion().equals("derecha")){
-                                    if(this.jugador.getX() + this.jugador.getAncho() + 1 < this.lienzo.getWidth()){
-                                        this.jugador.moverDE(1);
-                                        this.jugador.setUrl("src/Imagenes/slt2.png");
-                                    }   
-                                }else{
-                                    if(this.jugador.getX() - 1 > 0){
-                                        this.jugador.moverIZ(1);
-                                        this.jugador.setUrl("src/Imagenes/sl4.png");
-                                    }                            
-                                }
-                                //System.out.println("penul");
-                                System.out.println(respuesta);                                
-                            }else if(respuesta.equals("abajo") || this.jugador.getEstado().equals("neutral")){
-                                System.out.println("ultimo if");
-                                if(this.jugador.getDireccion().equals("derecha")){
-                                    System.out.println("hola");
-                                    this.jugador.setUrl("src/Imagenes/StandingR.png");
-                                }else{
-                                    this.jugador.setUrl("src/Imagenes/StandingL.png");
-                                }
-                                this.jugador.setEstado("suelo"); 
-                                this.jugador.setAire("neutral");
-                                alturaMax = this.jugador.getY()-180;
-                            }
-                        }
-//                    }                    
-//                }
-//            }
-//        }
-    }
+        String respuesta = verificarColision();
+        if(this.jugador.getEstado().equals("aire") || respuesta.equals("no colisiona")){                    
+            if(this.jugador.getAire().equals("subida") && this.jugador.getY() - 1 >= alturaMax){
+                salto1();
+            }else if(!respuesta.equals("abajo")){  
+                salto2();
+                alturaMax = this.jugador.getY()-180;
+            }else if(respuesta.equals("abajo")){
+                salto3();
+            }
+        }
+    } 
     
     private void esperar(int milisegundos) {
         try {
@@ -369,5 +208,207 @@ public class Inicio extends javax.swing.JFrame implements Runnable{
         } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
-    }    
+    }
+
+    public void crearObjetos1(){
+        this.jugador = new Jugador("src/Imagenes/StandingR.png", 600, 493, 90, 86);        
+        FiguraEstandar suelo = new FiguraEstandar(0,583, 1, 1200);
+        FiguraEstandar suelo1 = new FiguraEstandar(0,420, 1, 327);
+        FiguraEstandar suelo2 = new FiguraEstandar(548,420, 1, 513);
+        FiguraEstandar suelo3 = new FiguraEstandar(159,276, 1, 257);
+        FiguraEstandar suelo4 = new FiguraEstandar(727,276, 1, 92);
+        this.lienzo.getMisFiguras().add(suelo);
+        this.lienzo.getMisFiguras().add(suelo1);
+        this.lienzo.getMisFiguras().add(suelo2);
+        this.lienzo.getMisFiguras().add(suelo3);
+        this.lienzo.getMisFiguras().add(suelo4);
+        
+    }
+    
+    public void crearObjetos2(){
+        FiguraEstandar suelo5 = new FiguraEstandar(1046,276, 1, 238);
+        FiguraEstandar suelo6 = new FiguraEstandar(0,132, 1, 92);
+        FiguraEstandar suelo7 = new FiguraEstandar(286,132, 1, 217);
+        FiguraEstandar suelo8 = new FiguraEstandar(798,132, 1, 758);
+        this.lienzo.getMisFiguras().add(suelo5);
+        this.lienzo.getMisFiguras().add(suelo6);
+        this.lienzo.getMisFiguras().add(suelo7);
+        this.lienzo.getMisFiguras().add(suelo8);
+        this.lienzo.getMisFiguras().add(jugador);
+    }
+    
+    public void animacionDerecha(){
+        switch (this.j) {
+            case 0 -> this.jugador.setUrl("src/Imagenes/StandingR.png");
+            case 1 -> this.jugador.setUrl("src/Imagenes/wk1.png");
+            case 2 -> this.jugador.setUrl("src/Imagenes/wk2.png");
+            case 3 -> this.jugador.setUrl("src/Imagenes/wk3.png");
+            case 4 -> this.jugador.setUrl("src/Imagenes/wk4.png");
+            case 5 -> this.jugador.setUrl("src/Imagenes/wk5.png");
+            case 6 -> this.jugador.setUrl("src/Imagenes/wk6.png");
+            case 7 -> this.jugador.setUrl("src/Imagenes/wk7.png");
+            default -> this.j = 0;            
+        }
+    }
+    
+    public void animacionIzquierda(){
+        switch (j) {
+            case 0 -> this.jugador.setUrl("src/Imagenes/StandingL.png");
+            case 1 -> this.jugador.setUrl("src/Imagenes/wk8.png");
+            case 2 -> this.jugador.setUrl("src/Imagenes/wk9.png");
+            case 3 -> this.jugador.setUrl("src/Imagenes/wk10.png");
+            case 4 -> this.jugador.setUrl("src/Imagenes/wk11.png");
+            case 5 -> this.jugador.setUrl("src/Imagenes/wk12.png");
+            case 6 -> this.jugador.setUrl("src/Imagenes/wk13.png");
+            case 7 -> this.jugador.setUrl("src/Imagenes/wk14.png");
+            default -> j = 0;
+        }
+    }
+    
+    public void moverDerecha(){
+        if(this.jugador.getEstado().equals("suelo")){
+            if(this.jugador.getDireccion().equals("derecha")){
+                animacionDerecha();
+            }else if(this.jugador.getDireccion().equals("izquierda")){
+                this.jugador.setDireccion("derecha");
+                this.jugador.setUrl("src/Imagenes/StandingR.png");
+            }   
+            if(this.jugador.getX()+this.jugador.getAncho()+20 <= this.lienzo.getWidth()){
+                this.jugador.moverDE(20);
+            }
+        }
+        j++;
+    }
+    
+    public void moverIzquierda(){
+        if(this.jugador.getDireccion().equals("derecha")){
+            this.jugador.setDireccion("izquierda");
+            this.jugador.setUrl("src/Imagenes/StandingL.png");
+        }else{
+            animacionIzquierda();
+        }   
+        if(this.jugador.getX()-20 >= 0){
+            this.jugador.moverIZ(20);
+        }
+        j++;
+    }
+    
+    public void moverArriba(){
+        if(this.jugador.getEstado().equals("suelo")){
+            this.jugador.setEstado("aire");
+            this.jugador.setAire("subida");                        
+        }
+        this.jugador.moverAR(1);
+    }
+    
+    public void moverAbajo(){
+        if(this.jugador.getY() != 493){
+            this.jugador.moverAB(1);
+        }
+    }
+    
+    public void reinicio1(){
+        this.procesoJuego = new Thread(this.lienzo);
+        this.lienzo.setSegundos(0);
+        this.lienzo.setI(0);
+        this.lienzo.setIsPlaying(true);
+        this.procesoJuego.start();
+        this.tiempo = new Thread(this);
+        this.tiempo.start();
+        this.lienzo.setVisible(true);
+    }
+    
+    public void reinicio2(){
+        intro.setVisible(false);
+        this.jugador.setX(600);
+        this.jugador.setY(493);
+        this.lienzo.setVisible(true);
+        this.jugador.setUrl("src/Imagenes/StandingR.png");
+        this.jugador.setEstado("suelo");
+        this.jugador.setAire("neutral");
+    }
+    
+    public void colision(Imagen temp){
+        if((jugador.getY()+jugador.getAlto() >= temp.getY() && temp.getY() + temp.getAlto() >= jugador.getY()) && (temp.getX() + temp.getAncho() >= jugador.getX() && jugador.getX() + jugador.getAncho() >= temp.getX())){
+            this.lienzo.setIsPlaying(false);
+            GameOver.setVisible(true);
+            this.lienzo.setVisible(false);
+            temp.setAncho(0);
+            temp.setAlto(0);                        
+            this.lienzo.setAux(-3);
+            this.lienzo.setAux1(0);
+        }
+    }
+    
+    public String colision2(FiguraEstandar actual){
+        String colision = "no colisiona";
+        if(jugador!= actual){
+            if((jugador.getY()+jugador.getAlto() >= actual.getY() && actual.getY() + actual.getAlto() >= jugador.getY()) && (actual.getX() + actual.getAncho() >= jugador.getX() && jugador.getX() + jugador.getAncho() >= actual.getX())){
+                if(jugador.getY()+jugador.getAlto() == actual.getY()){
+                    colision = "abajo";
+                }
+            }else{
+                colision = "no colisiona";
+            }
+        }
+        return colision;
+    }
+    
+    public String colision3(FiguraEstandar actual){
+        String colision = "no colisiona";
+        if(actual instanceof Imagen){
+            Imagen temp = (Imagen) actual;
+            if(temp instanceof Proyectil){
+                colision(temp);
+            }
+        }else{
+            if(jugador!= actual){
+                colision = colision2(actual);
+            } 
+        }
+        return colision;
+    }
+    
+    public void salto1(){
+        this.jugador.moverAR(1);
+        if(this.jugador.getDireccion().equals("derecha")){
+            if(this.jugador.getX() + this.jugador.getAncho() + 1 < this.lienzo.getWidth()){
+                this.jugador.moverDE(1); 
+                this.jugador.setUrl("src/Imagenes/slt1.png");
+            }
+        }else{
+            if(this.jugador.getX() - 1 > 0){
+                this.jugador.moverIZ(1);
+                this.jugador.setUrl("src/Imagenes/sl3.png");
+            }                            
+        }
+    }
+    
+    public void salto2(){
+        this.jugador.setAire("bajada");
+        this.jugador.moverAB(1);
+        if(this.jugador.getDireccion().equals("derecha")){
+            if(this.jugador.getX() + this.jugador.getAncho() + 1 < this.lienzo.getWidth()){
+                this.jugador.moverDE(1);
+                this.jugador.setUrl("src/Imagenes/slt2.png");
+            }   
+        }else{
+            if(this.jugador.getX() - 1 > 0){
+                this.jugador.moverIZ(1);
+                this.jugador.setUrl("src/Imagenes/sl4.png");
+            }                            
+        }
+    }
+    
+    public void salto3(){
+        if(this.jugador.getDireccion().equals("derecha")){
+            this.jugador.setUrl("src/Imagenes/StandingR.png");
+        }else{
+            this.jugador.setUrl("src/Imagenes/StandingL.png");
+        }
+        this.jugador.setEstado("suelo"); 
+        this.jugador.setAire("neutral");
+        alturaMax = this.jugador.getY()-180;
+    }
+    
 }

@@ -25,7 +25,7 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
     
     private LinkedList<FiguraEstandar> misFiguras;
     private boolean isPlaying;
-    private int i = 0,segundos = 0,aux = -1,aux1 = 0;
+    private int i = 0,segundos = 0,aux = -3,aux1 = 0;
     private Imagen adver;
     private Imagen flecha;
     private Proyectil shuriken;
@@ -133,16 +133,16 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
     
     public String verificarColision(Jugador jugador){
         String colision = "no colisiona";
-        int i = 0;
-        while(i < this.getMisFiguras().size() && colision.equals("no colisiona")){
-            if(jugador!= this.getMisFiguras().get(i)){
-                if(jugador.getY()+jugador.getAlto() == this.misFiguras.get(i).getY()){
+        int a = 0;
+        while(a < this.getMisFiguras().size() && colision.equals("no colisiona")){
+            if(jugador!= this.getMisFiguras().get(a)){
+                if(jugador.getY()+jugador.getAlto() == this.misFiguras.get(a).getY()){
                     colision = "abajo";
                 }else{
                     colision = "no colisiona";
                 }
             }            
-            i++;
+            a++;
         }
         return colision;
     }
@@ -150,179 +150,11 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
     public void mover(){
         for(FiguraEstandar actual: this.misFiguras){
             if(actual instanceof FiguraEstandar){
-                //System.out.println(""+aux);
-                if(actual instanceof Imagen){
-                    Imagen temp = (Imagen)actual;
-                    if(temp instanceof Jugador){
-                       Jugador jugador = (Jugador)temp;
-                       String respuesta = verificarColision(jugador);
-                       //System.out.println(respuesta);
-                    }                    
-                    
-                    //System.out.println(""+this.segundos);
-                }else if(this.segundos >= 2){
-                    if(aux != this.segundos && aux+1 != this.segundos && aux+2 != this.segundos && aux+3 != this.segundos){                        
-                        aux = this.segundos;
-                        this.adver.setAlto(80);
-                        this.adver.setAncho(80);
-                        this.flecha.setAlto(40);
-                        this.flecha.setAncho(40);
-                        this.shuriken.setAlto(0);
-                        this.shuriken.setAncho(0);
-                        int num1 = (int)Math.floor(Math.random()*6+1);
-                        switch (num1) {
-                            case 1 -> {
-                                this.adver.setX(10);
-                                this.adver.setY(470);
-                                int num2 = (int)Math.floor(Math.random()*2+1);
-                                if(num2 == 1){
-                                    this.flecha.setX(88);
-                                    this.flecha.setY(495);
-                                    this.flecha.setUrl("src/Imagenes/fdec.png");
-                                }else if(num2 == 2){
-                                    this.flecha.setX(82);
-                                    this.flecha.setY(470);
-                                    this.flecha.setUrl("src/Imagenes/fdear.png");
-                                }                                
-                            }
-                            case 2 -> {
-                                this.adver.setX(10);
-                                this.adver.setY(330);
-                                int num2 = (int)Math.floor(Math.random()*3+1);
-                                if(num2 == 1){
-                                    this.flecha.setX(88);
-                                    this.flecha.setY(355);
-                                    this.flecha.setUrl("src/Imagenes/fdec.png");
-                                }else if(num2 == 2){
-                                    this.flecha.setX(82);
-                                    this.flecha.setY(330);
-                                    this.flecha.setUrl("src/Imagenes/fdear.png");
-                                }else if(num2 == 3){
-                                    this.flecha.setX(82);
-                                    this.flecha.setY(380);
-                                    this.flecha.setUrl("src/Imagenes/fdeab.png");
-                                }
-                            }
-                            case 3 -> {
-                                this.adver.setX(10);
-                                this.adver.setY(170);
-                                int num2 = (int)Math.floor(Math.random()*3+1);
-                                if(num2 == 1){
-                                    this.flecha.setX(88);
-                                    this.flecha.setY(195);
-                                    this.flecha.setUrl("src/Imagenes/fdec.png");
-                                }else if(num2 == 2){
-                                    this.flecha.setX(82);
-                                    this.flecha.setY(170);
-                                    this.flecha.setUrl("src/Imagenes/fdear.png");
-                                }else if(num2 == 3){
-                                    this.flecha.setX(82);
-                                    this.flecha.setY(220);
-                                    this.flecha.setUrl("src/Imagenes/fdeab.png");
-                                }
-                            }
-                            case 4 -> {
-                                this.adver.setX(1110);
-                                this.adver.setY(170);
-                                int num2 = (int)Math.floor(Math.random()*3+1);
-                                if(num2 == 1){
-                                    this.flecha.setX(1080);
-                                    this.flecha.setY(189);
-                                    this.flecha.setUrl("src/Imagenes/fizc.png");
-                                }else if(num2 == 2){
-                                    this.flecha.setX(1085);
-                                    this.flecha.setY(170);
-                                    this.flecha.setUrl("src/Imagenes/fizar.png");
-                                }else if(num2 == 3){
-                                    this.flecha.setX(1085);
-                                    this.flecha.setY(220);
-                                    this.flecha.setUrl("src/Imagenes/fizab.png");
-                                }
-                            }
-                            case 5 -> {
-                                this.adver.setX(1110);
-                                this.adver.setY(330);
-                                int num2 = (int)Math.floor(Math.random()*3+1);
-                                if(num2 == 1){
-                                    this.flecha.setX(1080);
-                                    this.flecha.setY(349);
-                                    this.flecha.setUrl("src/Imagenes/fizc.png");
-                                }else if(num2 == 2){
-                                    this.flecha.setX(1085);
-                                    this.flecha.setY(330);
-                                    this.flecha.setUrl("src/Imagenes/fizar.png");
-                                }else if(num2 == 3){
-                                    this.flecha.setX(1085);
-                                    this.flecha.setY(380);
-                                    this.flecha.setUrl("src/Imagenes/fizab.png");
-                                }
-                            }
-                            case 6 -> {
-                                this.adver.setX(1110);
-                                this.adver.setY(470);
-                                int num2 = (int)Math.floor(Math.random()*2+1);
-                                if(num2 == 1){
-                                    this.flecha.setX(1080);
-                                    this.flecha.setY(489);
-                                    this.flecha.setUrl("src/Imagenes/fizc.png");
-                                }else if(num2 == 2){
-                                    this.flecha.setX(1085);
-                                    this.flecha.setY(470);
-                                    this.flecha.setUrl("src/Imagenes/fizar.png");
-                                }
-                            }
-                            default -> {
-                            }
-                        }
-                    }                   
-                }
-                if(this.segundos >= 2){
-                    if(aux1 != this.segundos && aux1+1 != this.segundos){
-                        aux1 = this.segundos;
-                        this.adver.setAlto(0);
-                        this.adver.setAncho(0);
-                        this.flecha.setAlto(0);
-                        this.flecha.setAncho(0);
-                    }
-                }
+                aparecer();
+                desaparecer();
                 if(this.segundos>=3){
-                    if(this.adver.getAlto() == 0 && this.shuriken.getAlto()== 0){
-                        this.shuriken.setAlto(60);
-                        this.shuriken.setAncho(60);
-                        this.shuriken.setX(this.adver.getX());
-                        this.shuriken.setY(this.adver.getY());
-                        if(flecha.getUrl().equals("src/Imagenes/fdec.png")){
-                            this.shuriken.setPuntero("derecha-centro");
-                        }else if(flecha.getUrl().equals("src/Imagenes/fdear.png")){
-                            this.shuriken.setPuntero("derecha-arriba");
-                        }else if(flecha.getUrl().equals("src/Imagenes/fdeab.png")){
-                            this.shuriken.setPuntero("derecha-abajo");
-                        }else if(flecha.getUrl().equals("src/Imagenes/fizc.png")){
-                            this.shuriken.setPuntero("izquierda-centro");
-                        }else if(flecha.getUrl().equals("src/Imagenes/fizar.png")){
-                            this.shuriken.setPuntero("izquierda-arriba");
-                        }else if(flecha.getUrl().equals("src/Imagenes/fizab.png")){
-                            this.shuriken.setPuntero("izquierda-abajo");
-                        }
-                    }else if(this.adver.getAlto() == 0){
-                        if(this.shuriken.getPuntero().equals("derecha-centro")){
-                            this.shuriken.moverDE(1);
-                        }else if(this.shuriken.getPuntero().equals("derecha-arriba")){
-                            this.shuriken.moverDE(1);
-                            this.shuriken.moverAR(1);
-                        }else if(this.shuriken.getPuntero().equals("derecha-abajo")){
-                            this.shuriken.moverDE(1);
-                            this.shuriken.moverAB(1);
-                        }else if(this.shuriken.getPuntero().equals("izquierda-centro")){
-                            this.shuriken.moverIZ(1);
-                        }else if(this.shuriken.getPuntero().equals("izquierda-arriba")){
-                            this.shuriken.moverIZ(1);
-                            this.shuriken.moverAR(1);
-                        }else if(this.shuriken.getPuntero().equals("izquierda-abajo")){
-                            this.shuriken.moverIZ(1);
-                            this.shuriken.moverAB(1);
-                        }                        
-                    }
+                    flecha3();
+                    flecha4();
                 }
             }
         }
@@ -360,7 +192,219 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         this.aux1 = aux1;
     }
     
+    public void caso1(){
+        this.adver.setX(10);
+        this.adver.setY(470);
+        int num2 = (int)Math.floor(Math.random()*2+1);
+        if(num2 == 1){
+            this.flecha.setX(88);
+            this.flecha.setY(495);
+            this.flecha.setUrl("src/Imagenes/fdec.png");
+        }else if(num2 == 2){
+            this.flecha.setX(82);
+            this.flecha.setY(470);
+            this.flecha.setUrl("src/Imagenes/fdear.png");
+        }   
+    }
+    
+    public void caso2(int num2){
+        if(num2 == 1){
+            this.flecha.setX(88);
+            this.flecha.setY(355);
+            this.flecha.setUrl("src/Imagenes/fdec.png");
+        }else if(num2 == 2){
+            this.flecha.setX(82);
+            this.flecha.setY(330);
+            this.flecha.setUrl("src/Imagenes/fdear.png");
+        }else if(num2 == 3){
+            this.flecha.setX(82);
+            this.flecha.setY(380);
+            this.flecha.setUrl("src/Imagenes/fdeab.png");
+        }
+    }
+    
+    public void caso2_1(){
+        this.adver.setX(10);
+        this.adver.setY(330);
+        int num2 = (int)Math.floor(Math.random()*3+1);
+        caso2(num2);
+    }
+    
+    public void caso3(int num2){
+        if(num2 == 1){
+            this.flecha.setX(88);
+            this.flecha.setY(195);
+            this.flecha.setUrl("src/Imagenes/fdec.png");
+        }else if(num2 == 2){
+            this.flecha.setX(82);
+            this.flecha.setY(170);
+            this.flecha.setUrl("src/Imagenes/fdear.png");
+        }else if(num2 == 3){
+            this.flecha.setX(82);
+            this.flecha.setY(220);
+            this.flecha.setUrl("src/Imagenes/fdeab.png");
+        }
+    }
+    
+    public void caso3_1(){
+        this.adver.setX(10);
+        this.adver.setY(170);
+        int num2 = (int)Math.floor(Math.random()*3+1);
+        caso3(num2);
+    }
+    
+    public void caso4(int num2){
+        if(num2 == 1){
+            this.flecha.setX(1080);
+            this.flecha.setY(189);
+            this.flecha.setUrl("src/Imagenes/fizc.png");
+        }else if(num2 == 2){
+            this.flecha.setX(1085);
+            this.flecha.setY(170);
+            this.flecha.setUrl("src/Imagenes/fizar.png");
+        }else if(num2 == 3){
+            this.flecha.setX(1085);
+            this.flecha.setY(220);
+            this.flecha.setUrl("src/Imagenes/fizab.png");
+        }
+    }
+    
+    public void caso4_1(){
+        this.adver.setX(1110);
+        this.adver.setY(170);
+        int num2 = (int)Math.floor(Math.random()*3+1);
+        caso4(num2);
+    }
+    
+    public void caso5(int num2){
+        if(num2 == 1){
+            this.flecha.setX(1080);
+            this.flecha.setY(349);
+            this.flecha.setUrl("src/Imagenes/fizc.png");
+        }else if(num2 == 2){
+            this.flecha.setX(1085);
+            this.flecha.setY(330);
+            this.flecha.setUrl("src/Imagenes/fizar.png");
+        }else if(num2 == 3){
+            this.flecha.setX(1085);
+            this.flecha.setY(380);
+            this.flecha.setUrl("src/Imagenes/fizab.png");
+        }
+    }
+    
+    public void caso5_1(){
+        this.adver.setX(1110);
+        this.adver.setY(330);
+        int num2 = (int)Math.floor(Math.random()*3+1);
+        caso5(num2);
+    }
+    
+    public void caso6(){
+        this.adver.setX(1110);
+        this.adver.setY(470);
+        int num2 = (int)Math.floor(Math.random()*2+1);
+        if(num2 == 1){
+            this.flecha.setX(1080);
+            this.flecha.setY(489);
+            this.flecha.setUrl("src/Imagenes/fizc.png");
+        }else if(num2 == 2){
+            this.flecha.setX(1085);
+            this.flecha.setY(470);
+            this.flecha.setUrl("src/Imagenes/fizar.png");
+        }
+    }
+    
+    public void aparecer(){
+      if(this.segundos >= 2){
+          if(aux != this.segundos && aux+1 != this.segundos){                        
+              aux = this.segundos;
+              this.adver.setAlto(80);
+              this.adver.setAncho(80);
+              casos();
+          }                   
+      }  
+    }
+    
+    public void desaparecer(){
+        if(this.segundos >= 3){
+            if(aux1 != this.segundos && aux1+1 != this.segundos){
+                aux1 = this.segundos;
+                this.adver.setAlto(0);
+                this.adver.setAncho(0);
+                this.flecha.setAlto(0);
+                this.flecha.setAncho(0);
+            }
+        }
+    }
+    
+    public void casos(){
+        this.flecha.setAlto(40);
+        this.flecha.setAncho(40);
+        this.shuriken.setAlto(0);
+        this.shuriken.setAncho(0);
+        int num1 = (int)Math.floor(Math.random()*6+1);
+        switch (num1) {
+            case 1 -> caso1();                            
+            case 2 -> caso2_1();                            
+            case 3 -> caso3_1();                            
+            case 4 -> caso4_1();
+            case 5 -> caso5_1();                            
+            case 6 -> caso6();                      
+        }
+    }
+    
+    public void flecha1(){
+        if(flecha.getUrl().equals("src/Imagenes/fdec.png")){
+            this.shuriken.setPuntero("derecha-centro");
+        }else if(flecha.getUrl().equals("src/Imagenes/fdear.png")){
+            this.shuriken.setPuntero("derecha-arriba");
+        }else if(flecha.getUrl().equals("src/Imagenes/fdeab.png")){
+            this.shuriken.setPuntero("derecha-abajo");
+        }else if(flecha.getUrl().equals("src/Imagenes/fizc.png")){
+            this.shuriken.setPuntero("izquierda-centro");
+        }else if(flecha.getUrl().equals("src/Imagenes/fizar.png")){
+            this.shuriken.setPuntero("izquierda-arriba");
+        }else if(flecha.getUrl().equals("src/Imagenes/fizab.png")){
+            this.shuriken.setPuntero("izquierda-abajo");
+        }
+    }
+    
+    public void flecha2(){
+        if(this.shuriken.getPuntero().equals("derecha-abajo")){
+            this.shuriken.moverDE(1);
+            this.shuriken.moverAB(1);
+        }else if(this.shuriken.getPuntero().equals("izquierda-centro")){
+            this.shuriken.moverIZ(1);
+        }else if(this.shuriken.getPuntero().equals("izquierda-arriba")){
+            this.shuriken.moverIZ(1);
+            this.shuriken.moverAR(1);
+        }else if(this.shuriken.getPuntero().equals("izquierda-abajo")){
+            this.shuriken.moverIZ(1);
+            this.shuriken.moverAB(1);
+        }
+    }
 
+    public void flecha3(){
+        if(this.adver.getAlto() == 0 && this.shuriken.getAlto()== 0){
+            this.shuriken.setAlto(60);
+            this.shuriken.setAncho(60);
+            this.shuriken.setX(this.adver.getX());
+            this.shuriken.setY(this.adver.getY());
+            flecha1();
+        }
+    }
+    
+    public void flecha4(){
+        if(this.adver.getAlto() == 0){
+            if(this.shuriken.getPuntero().equals("derecha-centro")){
+                this.shuriken.moverDE(1);
+            }else if(this.shuriken.getPuntero().equals("derecha-arriba")){
+                this.shuriken.moverDE(1);
+                this.shuriken.moverAR(1);
+            }
+            flecha2();
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }
