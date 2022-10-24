@@ -47,7 +47,12 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
     private void initComponents() {
 
         lienzo = new Controladores.Lienzo();
+        points = new javax.swing.JLabel();
+        btn_restart = new javax.swing.JLabel();
+        btn_pause = new javax.swing.JLabel();
+        btn_play = new javax.swing.JLabel();
         time = new javax.swing.JLabel();
+        points2 = new javax.swing.JLabel();
         GameOver = new javax.swing.JLabel();
         intro = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -71,11 +76,42 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
         lienzo.setOpaque(false);
         lienzo.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        points.setFont(new java.awt.Font("OCR A Std", 0, 27)); // NOI18N
+        points.setForeground(new java.awt.Color(255, 185, 5));
+        lienzo.add(points, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 0, 120, 50));
+
+        btn_restart.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_restartMouseClicked(evt);
+            }
+        });
+        lienzo.add(btn_restart, new org.netbeans.lib.awtextra.AbsoluteConstraints(626, 25, 30, 30));
+
+        btn_pause.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_pauseMouseClicked(evt);
+            }
+        });
+        lienzo.add(btn_pause, new org.netbeans.lib.awtextra.AbsoluteConstraints(533, 25, 30, 30));
+
+        btn_play.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_playMouseClicked(evt);
+            }
+        });
+        lienzo.add(btn_play, new org.netbeans.lib.awtextra.AbsoluteConstraints(583, 25, 30, 30));
+
         time.setFont(new java.awt.Font("OCR A Std", 0, 27)); // NOI18N
         time.setForeground(new java.awt.Color(255, 185, 5));
         lienzo.add(time, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 5, 120, 40));
 
         getContentPane().add(lienzo, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 1200, 630));
+
+        points2.setFont(new java.awt.Font("OCR A Std", 0, 36)); // NOI18N
+        points2.setForeground(new java.awt.Color(255, 255, 255));
+        getContentPane().add(points2, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 125, 180, 60));
+        points2.getAccessibleContext().setAccessibleDescription("");
+        points2.getAccessibleContext().setAccessibleParent(null);
 
         GameOver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/GameOver.png"))); // NOI18N
         getContentPane().add(GameOver, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -105,6 +141,7 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
             if(GameOver.isVisible()){
                 intro.setVisible(true);
                 GameOver.setVisible(false);
+                points2.setText("");
             }else{
                 if(!this.lienzo.isIsPlaying()){
                     reinicio1();
@@ -122,6 +159,35 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
     private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
 
     }//GEN-LAST:event_formKeyReleased
+
+    private void btn_pauseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_pauseMouseClicked
+        if(this.lienzo.isIsPlaying()){
+            this.lienzo.setIsPlaying(false);
+        }        
+    }//GEN-LAST:event_btn_pauseMouseClicked
+
+    private void btn_playMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_playMouseClicked
+        if(!this.lienzo.isIsPlaying()){
+            this.procesoJuego = new Thread(this.lienzo);
+            this.lienzo.setIsPlaying(true);
+            this.procesoJuego.start();
+            this.tiempo = new Thread(this);
+            this.tiempo.start();
+        }
+    }//GEN-LAST:event_btn_playMouseClicked
+
+    private void btn_restartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_restartMouseClicked
+        if(!this.lienzo.isIsPlaying()){
+            reinicio1();
+            reinicio2();
+            this.lienzo.setAux(-3);
+            this.lienzo.setAux1(0);
+            this.lienzo.setPuntos(0);
+        }else{
+            reinicio3();
+            this.lienzo.setPuntos(0);
+        }
+    }//GEN-LAST:event_btn_restartMouseClicked
 
     /**
      * @param args the command line arguments
@@ -158,13 +224,19 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
     
    public void actualizarTiempo(){
        this.time.setText(""+this.lienzo.getSegundos()+"."+this.lienzo.getI());
+       this.points.setText(""+this.lienzo.getPuntos());
    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel GameOver;
+    private javax.swing.JLabel btn_pause;
+    private javax.swing.JLabel btn_play;
+    private javax.swing.JLabel btn_restart;
     private javax.swing.JLabel intro;
     private javax.swing.JLabel jLabel1;
     private Controladores.Lienzo lienzo;
+    private javax.swing.JLabel points;
+    private javax.swing.JLabel points2;
     private javax.swing.JLabel time;
     // End of variables declaration//GEN-END:variables
 
@@ -316,6 +388,7 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
         this.tiempo = new Thread(this);
         this.tiempo.start();
         this.lienzo.setVisible(true);
+        this.lienzo.setPuntos(0);
     }
     
     public void reinicio2(){
@@ -328,13 +401,32 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
         this.jugador.setAire("neutral");
     }
     
+    public void reinicio3(){
+        this.lienzo.setSegundos(0);
+        this.lienzo.setI(0);
+        this.jugador.setX(600);
+        this.jugador.setY(493);
+        this.jugador.setUrl("src/Imagenes/StandingR.png");
+        this.jugador.setEstado("suelo");
+        this.jugador.setAire("neutral");
+        this.lienzo.getAdver().setAlto(0);
+        this.lienzo.getAdver().setAncho(0);
+        this.lienzo.getFlecha().setAlto(0);
+        this.lienzo.getFlecha().setAncho(0);
+        this.lienzo.getShuriken().setAlto(0);
+        this.lienzo.getShuriken().setAncho(0);
+    }
+    
     public void colision(Imagen temp){
         if((jugador.getY()+jugador.getAlto() >= temp.getY() && temp.getY() + temp.getAlto() >= jugador.getY()) && (temp.getX() + temp.getAncho() >= jugador.getX() && jugador.getX() + jugador.getAncho() >= temp.getX())){
             this.lienzo.setIsPlaying(false);
             GameOver.setVisible(true);
+            this.points2.setText(""+this.lienzo.getPuntos());
             this.lienzo.setVisible(false);
             temp.setAncho(0);
-            temp.setAlto(0);                        
+            temp.setAlto(0);
+            temp.setX(0);
+            temp.setY(0);
             this.lienzo.setAux(-3);
             this.lienzo.setAux1(0);
         }

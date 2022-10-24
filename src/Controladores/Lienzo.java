@@ -25,10 +25,42 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
     
     private LinkedList<FiguraEstandar> misFiguras;
     private boolean isPlaying;
-    private int i = 0,segundos = 0,aux = -3,aux1 = 0;
+    private int i = 0,segundos = 0,aux = -3,aux1 = 0,puntos = 0;
     private Imagen adver;
     private Imagen flecha;
     private Proyectil shuriken;
+
+    public int getPuntos() {
+        return puntos;
+    }
+
+    public void setPuntos(int puntos) {
+        this.puntos = puntos;
+    }
+
+    public Imagen getAdver() {
+        return adver;
+    }
+
+    public void setAdver(Imagen adver) {
+        this.adver = adver;
+    }
+
+    public Imagen getFlecha() {
+        return flecha;
+    }
+
+    public void setFlecha(Imagen flecha) {
+        this.flecha = flecha;
+    }
+
+    public Proyectil getShuriken() {
+        return shuriken;
+    }
+
+    public void setShuriken(Proyectil shuriken) {
+        this.shuriken = shuriken;
+    }
     
     /**
      * Creates new form Lienzo
@@ -329,6 +361,7 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         if(this.segundos >= 3){
             if(aux1 != this.segundos && aux1+1 != this.segundos){
                 aux1 = this.segundos;
+                puntos++;
                 this.adver.setAlto(0);
                 this.adver.setAncho(0);
                 this.flecha.setAlto(0);
@@ -371,16 +404,16 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
     
     public void flecha2(){
         if(this.shuriken.getPuntero().equals("derecha-abajo")){
-            this.shuriken.moverDE(1);
+            int num2 = (int)Math.floor(Math.random()*2+1);
+            if(num2 == 1) this.shuriken.moverDE(1);
+            else this.shuriken.moverDE(3);
             this.shuriken.moverAB(1);
         }else if(this.shuriken.getPuntero().equals("izquierda-centro")){
-            this.shuriken.moverIZ(1);
+            this.shuriken.moverIZ(2);
         }else if(this.shuriken.getPuntero().equals("izquierda-arriba")){
-            this.shuriken.moverIZ(1);
-            this.shuriken.moverAR(1);
+            flecha6();
         }else if(this.shuriken.getPuntero().equals("izquierda-abajo")){
-            this.shuriken.moverIZ(1);
-            this.shuriken.moverAB(1);
+            flecha5();
         }
     }
 
@@ -397,13 +430,29 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
     public void flecha4(){
         if(this.adver.getAlto() == 0){
             if(this.shuriken.getPuntero().equals("derecha-centro")){
-                this.shuriken.moverDE(1);
+                this.shuriken.moverDE(2);
             }else if(this.shuriken.getPuntero().equals("derecha-arriba")){
-                this.shuriken.moverDE(1);
+                int num2 = (int)Math.floor(Math.random()*2+1);
+                if(num2 == 1) this.shuriken.moverDE(1);
+                else this.shuriken.moverDE(3);                                
                 this.shuriken.moverAR(1);
             }
             flecha2();
         }
+    }
+    
+    public void flecha5(){
+        int num2 = (int)Math.floor(Math.random()*2+1);
+        if(num2 == 1) this.shuriken.moverIZ(1);
+        else this.shuriken.moverIZ(3);
+        this.shuriken.moverAB(1);        
+    }
+    
+    public void flecha6(){
+        int num2 = (int)Math.floor(Math.random()*2+1);
+        if(num2 == 1) this.shuriken.moverIZ(1);
+        else this.shuriken.moverIZ(3);
+        this.shuriken.moverAR(1);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
