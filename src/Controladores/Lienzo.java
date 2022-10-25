@@ -63,6 +63,7 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
     }
     
     /**
+     * Metodo constructor del lienzo
      * Creates new form Lienzo
      */
     public Lienzo() {
@@ -77,34 +78,53 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         this.misFiguras.add(shuriken);
     }
 
+    /**
+     * Metodo que retorna el estado de isPlaying
+     * @return 
+     */
     public boolean isIsPlaying() {
         return isPlaying;
     }
 
+    /**
+     * Metodo que modifica el valor de isPlaying
+     * @param isPlaying 
+     */
     public void setIsPlaying(boolean isPlaying) {
         this.isPlaying = isPlaying;
     }
 
+    /**
+     * Metodo que retorna la lista de figuras del liezo
+     * @return 
+     */
     public LinkedList<FiguraEstandar> getMisFiguras() {
         return misFiguras;
     }
 
+    /**
+     * Metodo que setea los valores de la lista de figuras
+     * @param misFiguras 
+     */
     public void setMisFiguras(LinkedList<FiguraEstandar> misFiguras) {
         this.misFiguras = misFiguras;
     }
     
+    /**
+     * Metodo que permite dibujar en el lienzo una imagen
+     * @param g
+     * @param imagenActual 
+     */
     public void dibujarImagen(Graphics g,Imagen imagenActual){
         Toolkit t = Toolkit.getDefaultToolkit();
         Image imagen = t.getImage(imagenActual.getUrl());
         g.drawImage(imagen,imagenActual.getX(),imagenActual.getY(), imagenActual.getAncho(),imagenActual.getAlto(), this);
-        //g.drawRect(imagenActual.getX(),imagenActual.getY(), imagenActual.getAncho(),imagenActual.getAlto());
-    }
-    
-    public void dibujarRectangulo(Graphics g,FiguraEstandar rectangulo){
-        g.setColor(Color.red);
-        //g.drawRect(rectangulo.getX(),rectangulo.getY(),rectangulo.getAncho(),rectangulo.getAlto());
     }
 
+    /**
+     * Metodo que permite pintar las figuras dispuestas para el juego
+     * @param g 
+     */
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
@@ -112,12 +132,8 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
             FiguraEstandar actual = this.misFiguras.get(a);
             if(actual instanceof Imagen){
                 dibujarImagen(g, (Imagen) actual);                
-            }else{
-                dibujarRectangulo(g, actual);
             }
-            
-        }
-        
+        }        
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -140,6 +156,9 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Metodo que permite que el juego corra con todos los valores dados
+     */
     @Override
     public void run() {
         while(this.isPlaying){
@@ -155,6 +174,10 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         System.out.println("Fin del proceso");
     }
 
+    /**
+     * Metodo que espera una cierta cantidad de tiempo para que el programa continue su proceso
+     * @param milisegundos 
+     */
     private void esperar(int milisegundos) {
         try {
             Thread.sleep(milisegundos);
@@ -163,22 +186,9 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         }
     }
     
-    public String verificarColision(Jugador jugador){
-        String colision = "no colisiona";
-        int a = 0;
-        while(a < this.getMisFiguras().size() && colision.equals("no colisiona")){
-            if(jugador!= this.getMisFiguras().get(a)){
-                if(jugador.getY()+jugador.getAlto() == this.misFiguras.get(a).getY()){
-                    colision = "abajo";
-                }else{
-                    colision = "no colisiona";
-                }
-            }            
-            a++;
-        }
-        return colision;
-    }
-    
+    /**
+     * Metodo que permite mostrar las advertencias en diferentes lugares en el transcurso del juego
+     */
     public void mover(){
         for(FiguraEstandar actual: this.misFiguras){
             if(actual instanceof FiguraEstandar){
@@ -192,38 +202,74 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         }
     }
 
+    /**
+     * Metodo que permite obtener el valor de i
+     * @return 
+     */
     public int getI() {
         return i/2;
     }
 
+    /**
+     * Metodo que permite modificar el valor de i
+     * @param i 
+     */
     public void setI(int i) {
         this.i = i;
     }
 
+    /**
+     * Metodo que permite obtenr el valor de segundos
+     * @return 
+     */
     public int getSegundos() {
         return segundos;
     }
 
+    /**
+     * Metodo que permite cambiar el valor de segundos
+     * @param segundos 
+     */
     public void setSegundos(int segundos) {
         this.segundos = segundos;
     }
 
+    /**
+     * Metodo que retorna el valor de aux
+     * @return 
+     */
     public int getAux() {
         return aux;
     }
 
+    /**
+     * Metodo que permite cambiar el valor de aux
+     * @param aux 
+     */
     public void setAux(int aux) {
         this.aux = aux;
     }
 
+    /**
+     * Metodo que permite obtener el valor de aux1
+     * @return 
+     */
     public int getAux1() {
         return aux1;
     }
 
+    /**
+     * Metodo que permite cambiar el valor de aux1
+     * @param aux1 
+     */
     public void setAux1(int aux1) {
         this.aux1 = aux1;
     }
     
+    /**
+     * Metodo que da una posicion de 6 aleatorias a el signo de advertencia ademas de la posicion de 
+     * Su respectiva flecha en 3 posiciones aleatorias
+     */
     public void caso1(){
         this.adver.setX(10);
         this.adver.setY(470);
@@ -239,6 +285,9 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         }   
     }
     
+    /**
+     * Metodo que da una posicion de 3 aleatorias a la flecha de advertencia 
+     */
     public void caso2(int num2){
         if(num2 == 1){
             this.flecha.setX(88);
@@ -255,6 +304,9 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         }
     }
     
+    /**
+     * Metodo complementario que contiene al caso2 para darle una posicion al signo de advertencia y a la flecha
+     */
     public void caso2_1(){
         this.adver.setX(10);
         this.adver.setY(330);
@@ -262,6 +314,10 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         caso2(num2);
     }
     
+    /**
+     * Metodo que da una posicion de 3 aleatorias a la flecha de advertencia 
+     * @param num2
+     */
     public void caso3(int num2){
         if(num2 == 1){
             this.flecha.setX(88);
@@ -278,6 +334,9 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         }
     }
     
+    /**
+     * Metodo complementario que contiene al caso3 para darle una posicion al signo de advertencia y a la flecha
+     */
     public void caso3_1(){
         this.adver.setX(10);
         this.adver.setY(170);
@@ -285,6 +344,10 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         caso3(num2);
     }
     
+    /**
+     * Metodo que da una posicion de 3 aleatorias a la flecha de advertencia 
+     * @param num2
+     */
     public void caso4(int num2){
         if(num2 == 1){
             this.flecha.setX(1080);
@@ -301,6 +364,9 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         }
     }
     
+    /**
+     * Metodo complementario que contiene al caso4 para darle una posicion al signo de advertencia y a la flecha
+     */
     public void caso4_1(){
         this.adver.setX(1110);
         this.adver.setY(170);
@@ -308,6 +374,10 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         caso4(num2);
     }
     
+    /**
+     * Metodo que da una posicion de 3 aleatorias a la flecha de advertencia 
+     * @param num2
+     */
     public void caso5(int num2){
         if(num2 == 1){
             this.flecha.setX(1080);
@@ -324,6 +394,9 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         }
     }
     
+    /**
+     * Metodo complementario que contiene al caso4 para darle una posicion al signo de advertencia y a la flecha
+     */
     public void caso5_1(){
         this.adver.setX(1110);
         this.adver.setY(330);
@@ -331,6 +404,10 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         caso5(num2);
     }
     
+    /**
+     * Metodo que da una posicion de 3 aleatorias a la flecha de advertencia 
+     * @param num2
+     */
     public void caso6(){
         this.adver.setX(1110);
         this.adver.setY(470);
@@ -346,6 +423,9 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         }
     }
     
+    /**
+     * Metodo que permite que aparesca la advertencia dependiendo de cuanto tiempo halla pasado
+     */
     public void aparecer(){
       if(this.segundos >= 2){
           if(aux != this.segundos && aux+1 != this.segundos){                        
@@ -357,6 +437,9 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
       }  
     }
     
+    /**
+     * Metodo que permite que desaparesca la advertencia dependiendo de cuanto tiempo halla pasado
+     */
     public void desaparecer(){
         if(this.segundos >= 3){
             if(aux1 != this.segundos && aux1+1 != this.segundos){
@@ -370,6 +453,9 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         }
     }
     
+    /**
+     * Metodo que compila todos los casos previamente mencionados
+     */
     public void casos(){
         this.flecha.setAlto(40);
         this.flecha.setAncho(40);
@@ -386,6 +472,10 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         }
     }
     
+    /**
+     * Metodo que segun la direcion de la flecha de advertencia setea el puntero del proyectil para 
+     * Posteriormente ser lanzado y esquivado por el jugador
+     */
     public void flecha1(){
         if(flecha.getUrl().equals("src/Imagenes/fdec.png")){
             this.shuriken.setPuntero("derecha-centro");
@@ -402,6 +492,10 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         }
     }
     
+    /**
+     * Metodo que segun la direccion del puntero del proyectil lo lanza en determinada direccion 
+     * ademas compila los metodos flecha5 y flecha6 que son mas verificaciones de el puntero del proyectil
+     */
     public void flecha2(){
         if(this.shuriken.getPuntero().equals("derecha-abajo")){
             int num2 = (int)Math.floor(Math.random()*2+1);
@@ -417,6 +511,9 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         }
     }
 
+    /**
+     * Hace aparecer el proyectil una vez se halla ido la advertencia
+     */
     public void flecha3(){
         if(this.adver.getAlto() == 0 && this.shuriken.getAlto()== 0){
             this.shuriken.setAlto(60);
@@ -427,6 +524,9 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         }
     }
     
+    /**
+     * Verifica el puntero del proyectil para saber a donde mover el shuriken
+     */
     public void flecha4(){
         if(this.adver.getAlto() == 0){
             if(this.shuriken.getPuntero().equals("derecha-centro")){
@@ -441,6 +541,9 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         }
     }
     
+    /**
+     * Una vez dada cirta valor del puntero este lo mueve para de izquierda y para abajo
+     */
     public void flecha5(){
         int num2 = (int)Math.floor(Math.random()*2+1);
         if(num2 == 1) this.shuriken.moverIZ(1);
@@ -448,6 +551,9 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         this.shuriken.moverAB(1);        
     }
     
+    /**
+     * Una vez dada cirta valor del puntero este lo mueve para de izquierda y para arriba
+     */
     public void flecha6(){
         int num2 = (int)Math.floor(Math.random()*2+1);
         if(num2 == 1) this.shuriken.moverIZ(1);

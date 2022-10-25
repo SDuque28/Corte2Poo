@@ -8,6 +8,7 @@ import Modelos.FiguraEstandar;
 import Modelos.Imagen;
 import Modelos.Jugador;
 import Modelos.Proyectil;
+import java.applet.AudioClip;
 import java.awt.event.KeyEvent;
 
 /**
@@ -21,7 +22,9 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
     Jugador jugador;
     int j = 0;
     int alturaMax;
+    
     /**
+     * Constructor del Frame
      * Creates new form Inicio
      */
     public Inicio() {
@@ -61,10 +64,6 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 formKeyPressed(evt);
-                KeyPressed(evt);
-            }
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                formKeyReleased(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 formKeyTyped(evt);
@@ -111,7 +110,6 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
         points2.setForeground(new java.awt.Color(255, 255, 255));
         getContentPane().add(points2, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 125, 180, 60));
         points2.getAccessibleContext().setAccessibleDescription("");
-        points2.getAccessibleContext().setAccessibleParent(null);
 
         GameOver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/GameOver.png"))); // NOI18N
         getContentPane().add(GameOver, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -125,6 +123,10 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Detecta si el usuario presiono una tecla, y segun eso se mueve para alguna direccion
+     * @param evt 
+     */
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
         if(this.lienzo.isIsPlaying()){
             switch (evt.getKeyCode()) {
@@ -136,6 +138,10 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
         }        
     }//GEN-LAST:event_formKeyPressed
 
+    /**
+     * Detecta si el usuario presiona enter para iniciar el juego
+     * @param evt 
+     */
     private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
         if(evt.getKeyChar() == KeyEvent.VK_ENTER){
             if(GameOver.isVisible()){
@@ -152,20 +158,20 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
         }
     }//GEN-LAST:event_formKeyTyped
 
-    private void KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_KeyPressed
-
-    private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
-
-    }//GEN-LAST:event_formKeyReleased
-
+    /**
+     * Boton de pausa del juego
+     * @param evt 
+     */
     private void btn_pauseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_pauseMouseClicked
         if(this.lienzo.isIsPlaying()){
             this.lienzo.setIsPlaying(false);
         }        
     }//GEN-LAST:event_btn_pauseMouseClicked
 
+    /**
+     * Boton de play
+     * @param evt 
+     */
     private void btn_playMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_playMouseClicked
         if(!this.lienzo.isIsPlaying()){
             this.procesoJuego = new Thread(this.lienzo);
@@ -176,6 +182,10 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
         }
     }//GEN-LAST:event_btn_playMouseClicked
 
+    /**
+     * Boton de reinicio
+     * @param evt 
+     */
     private void btn_restartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_restartMouseClicked
         if(!this.lienzo.isIsPlaying()){
             reinicio1();
@@ -222,9 +232,12 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
         });
     }
     
+    /**
+     * Metodo que mantiene actualizado el tiempo y los puntos en el juego
+     */
    public void actualizarTiempo(){
        this.time.setText(""+this.lienzo.getSegundos()+"."+this.lienzo.getI());
-       this.points.setText(""+this.lienzo.getPuntos());
+       this.points.setText(""+this.lienzo.getPuntos()*100);
    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -240,6 +253,9 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
     private javax.swing.JLabel time;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Metodo que se mantiene corriendo mientras se este hugando
+     */
     @Override
     public void run() {
         while(this.lienzo.isIsPlaying()){
@@ -249,6 +265,10 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
         }
     }
     
+    /**
+     * Metodo que verifica si el usuario choca con algo ya sea una plataforma o un proyectil
+     * @return El valor de dicha colision
+     */
     public String verificarColision(){
         String colision = "no colisiona";
         int i = 0;
@@ -260,6 +280,10 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
         return colision;
     }
     
+    /**
+     * Metodo que permite al usuario saltar detectando cual es su estado y subiendo o bajando 
+     * segun sea el caso
+     */
     public void mover(){
         String respuesta = verificarColision();
         if(this.jugador.getEstado().equals("aire") || respuesta.equals("no colisiona")){                    
@@ -274,6 +298,10 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
         }
     } 
     
+    /**
+     * Metodo que hace esperar al sistema para continuar su ejecucion
+     * @param milisegundos 
+     */
     private void esperar(int milisegundos) {
         try {
             Thread.sleep(milisegundos);
@@ -282,6 +310,10 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
         }
     }
 
+    /**
+     * Metodo inicializador de todos los objetos nesesarios para empezar el juego
+     * Ademas de añadirlos a la lista de figuras para posteriormente ser pintadas en lienzo
+     */
     public void crearObjetos1(){
         this.jugador = new Jugador("src/Imagenes/StandingR.png", 600, 493, 90, 86);        
         FiguraEstandar suelo = new FiguraEstandar(0,583, 1, 1200);
@@ -297,6 +329,9 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
         
     }
     
+    /**
+     * Metodo auxiliar a crearObjetos1 en el cual se crean y añaden objetos para empezar el juego
+     */
     public void crearObjetos2(){
         FiguraEstandar suelo5 = new FiguraEstandar(1046,276, 1, 238);
         FiguraEstandar suelo6 = new FiguraEstandar(0,132, 1, 92);
@@ -309,6 +344,10 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
         this.lienzo.getMisFiguras().add(jugador);
     }
     
+    /**
+     * Metodo que crea la animacion del usuario caminando cambiandolo por una serie de imagenes
+     * Siempre y cuando su direccion sea la derecha
+     */
     public void animacionDerecha(){
         switch (this.j) {
             case 0 -> this.jugador.setUrl("src/Imagenes/StandingR.png");
@@ -323,6 +362,10 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
         }
     }
     
+    /**
+     * Metodo que crea la animacion del usuario caminando cambiandolo por una serie de imagenes
+     * Siempre y cuando su direccion sea la izquierda
+     */
     public void animacionIzquierda(){
         switch (j) {
             case 0 -> this.jugador.setUrl("src/Imagenes/StandingL.png");
@@ -337,6 +380,10 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
         }
     }
     
+    /**
+     * Metodo que permite al usuario moverse hacia la derecha y preveendo que no se salga de los limites
+     * predispuestos por el liezo
+     */
     public void moverDerecha(){
         if(this.jugador.getEstado().equals("suelo")){
             if(this.jugador.getDireccion().equals("derecha")){
@@ -352,6 +399,10 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
         j++;
     }
     
+    /**
+     * Metodo que permite al usuario moverse hacia la izquierda y preveendo que no se salga de los limites
+     * predispuestos por el liezo
+     */
     public void moverIzquierda(){
         if(this.jugador.getDireccion().equals("derecha")){
             this.jugador.setDireccion("izquierda");
@@ -365,6 +416,9 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
         j++;
     }
     
+    /**
+     * Metodo que mueve al jugador hacia arriba siempre y cuando este saltando
+     */
     public void moverArriba(){
         if(this.jugador.getEstado().equals("suelo")){
             this.jugador.setEstado("aire");
@@ -373,12 +427,18 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
         this.jugador.moverAR(1);
     }
     
+    /**
+     * Metodo que permite mover el jugador para abajao siempre y cuando este en bajada
+     */
     public void moverAbajo(){
         if(this.jugador.getY() != 493){
             this.jugador.moverAB(1);
         }
     }
     
+    /**
+     * Primero de tres metodos que permite el reinicio del juego y todos sus parametros
+     */
     public void reinicio1(){
         this.procesoJuego = new Thread(this.lienzo);
         this.lienzo.setSegundos(0);
@@ -391,6 +451,9 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
         this.lienzo.setPuntos(0);
     }
     
+    /**
+     * Segundo de tres metodos que permite el reinicio del juego y todos sus parametros
+     */
     public void reinicio2(){
         intro.setVisible(false);
         this.jugador.setX(600);
@@ -399,8 +462,12 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
         this.jugador.setUrl("src/Imagenes/StandingR.png");
         this.jugador.setEstado("suelo");
         this.jugador.setAire("neutral");
+        alturaMax = this.jugador.getY()-180;
     }
     
+    /**
+     * Tercero de tres metodos que permite el reinicio del juego y todos sus parametros
+     */
     public void reinicio3(){
         this.lienzo.setSegundos(0);
         this.lienzo.setI(0);
@@ -417,11 +484,16 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
         this.lienzo.getShuriken().setAncho(0);
     }
     
+    /**
+     * Metodo que verifica que el usuario no se halla chocado con un proyectil
+     * Y en el caso de que si que se termine el juego y muestre game over
+     * @param temp 
+     */
     public void colision(Imagen temp){
         if((jugador.getY()+jugador.getAlto() >= temp.getY() && temp.getY() + temp.getAlto() >= jugador.getY()) && (temp.getX() + temp.getAncho() >= jugador.getX() && jugador.getX() + jugador.getAncho() >= temp.getX())){
             this.lienzo.setIsPlaying(false);
             GameOver.setVisible(true);
-            this.points2.setText(""+this.lienzo.getPuntos());
+            this.points2.setText(""+this.lienzo.getPuntos()*100);
             this.lienzo.setVisible(false);
             temp.setAncho(0);
             temp.setAlto(0);
@@ -432,6 +504,12 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
         }
     }
     
+    /**
+     * Metodo que verifica que el jugador siempre este parado sobre una plataforma lo cual le permite
+     * Poder saltar y caerse de plataforma a plataforma
+     * @param actual
+     * @return el valor de colision
+     */
     public String colision2(FiguraEstandar actual){
         String colision = "no colisiona";
         if(jugador!= actual){
@@ -446,6 +524,12 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
         return colision;
     }
     
+    /**
+     * Metodo principal que junta los metodos de colision1 y dos para ver si el jugador colisiona con 
+     * Un proyectil o con una plataforma
+     * @param actual
+     * @return el valor de la colision
+     */
     public String colision3(FiguraEstandar actual){
         String colision = "no colisiona";
         if(actual instanceof Imagen){
@@ -461,6 +545,10 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
         return colision;
     }
     
+    /**
+     * Metodo que move al jugador a la derecha o a la izquierda ademas de cambiarle la imagen cuando el 
+     * Jugador esta saltando, para que se pueda ver su movimiento parabolico, cuando esta llendo para arriba
+     */
     public void salto1(){
         this.jugador.moverAR(1);
         if(this.jugador.getDireccion().equals("derecha")){
@@ -476,6 +564,10 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
         }
     }
     
+    /**
+     * Metodo que move al jugador a la derecha o a la izquierda ademas de cambiarle la imagen cuando el 
+     * Jugador esta saltando, para que se pueda ver su movimiento parabolico, cuando esta llendo para abajo
+     */
     public void salto2(){
         this.jugador.setAire("bajada");
         this.jugador.moverAB(1);
@@ -492,6 +584,9 @@ public final class Inicio extends javax.swing.JFrame implements Runnable{
         }
     }
     
+    /**
+     * Metodo que finaliza los saltos y reinica los valores del jugador para que pueda volver a saltar
+     */
     public void salto3(){
         if(this.jugador.getDireccion().equals("derecha")){
             this.jugador.setUrl("src/Imagenes/StandingR.png");
