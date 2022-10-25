@@ -30,34 +30,66 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
     private Imagen flecha;
     private Proyectil shuriken;
 
+    /**
+     * Metodo que retorna los puntos del jugador
+     * @return 
+     */
     public int getPuntos() {
         return puntos;
     }
 
+    /**
+     * Metodo que setea los puntos
+     * @param puntos 
+     */
     public void setPuntos(int puntos) {
         this.puntos = puntos;
     }
 
+    /**
+     * Metodo que retorna la imagen de advertencia
+     * @return 
+     */
     public Imagen getAdver() {
         return adver;
     }
 
+    /**
+     * Metodo que setea la imagen de advertencia
+     * @param adver 
+     */
     public void setAdver(Imagen adver) {
         this.adver = adver;
     }
 
+    /**
+     * Metodo que retorna la imagen de la flecha
+     * @return 
+     */
     public Imagen getFlecha() {
         return flecha;
     }
 
+    /**
+     * Metodo que seta la imagen de la flecha
+     * @param flecha 
+     */
     public void setFlecha(Imagen flecha) {
         this.flecha = flecha;
     }
 
+    /**
+     * Metodo que devuelve el shuriken
+     * @return 
+     */
     public Proyectil getShuriken() {
         return shuriken;
     }
 
+    /**
+     * Metodo que setea el proyectil
+     * @param shuriken 
+     */
     public void setShuriken(Proyectil shuriken) {
         this.shuriken = shuriken;
     }
@@ -287,6 +319,7 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
     
     /**
      * Metodo que da una posicion de 3 aleatorias a la flecha de advertencia 
+     * @param num2
      */
     public void caso2(int num2){
         if(num2 == 1){
@@ -406,7 +439,6 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
     
     /**
      * Metodo que da una posicion de 3 aleatorias a la flecha de advertencia 
-     * @param num2
      */
     public void caso6(){
         this.adver.setX(1110);

@@ -8,7 +8,6 @@ import Modelos.FiguraEstandar;
 import Modelos.Imagen;
 import Modelos.Jugador;
 import Modelos.Proyectil;
-import java.applet.AudioClip;
 import java.awt.event.KeyEvent;
 
 /**
